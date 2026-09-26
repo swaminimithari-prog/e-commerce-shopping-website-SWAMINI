@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:5000/api"; // update to your deployed backend URL
+const API_BASE = "https://e-commerce-shopping-website-swamini.onrender.com/api"; // Render backend URL
 
 const token = localStorage.getItem("buybloom_token"); // JWT auth token only — not app data
 

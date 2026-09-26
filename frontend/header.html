@@ -506,7 +506,7 @@
         addWishlistHearts();
         new MutationObserver(addWishlistHearts).observe(document.body, { childList: true, subtree: true });
 
-        var API_BASE = 'http://localhost:5000/api';
+        var API_BASE = 'https://e-commerce-shopping-website-swamini.onrender.com/api';
         var token = localStorage.getItem('buybloom_token');
         var loginBtn = document.getElementById('loginBtn');
         if (token && loginBtn) {

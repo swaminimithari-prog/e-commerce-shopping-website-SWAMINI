@@ -170,7 +170,7 @@
 // httpRequest.open('GET', 'https://5d76bf96515d1a0014085cf9.mockapi.io/product/'+id, true)
 // httpRequest.send()  
 
-const API_BASE_URL = "http://localhost:5000";
+const API_BASE_URL = "https://e-commerce-shopping-website-swamini.onrender.com";
 
 const urlParams = new URLSearchParams(location.search);
 const productId = urlParams.get('id');

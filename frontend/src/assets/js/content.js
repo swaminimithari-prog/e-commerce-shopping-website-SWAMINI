@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:5000";
+const API_BASE_URL = "https://e-commerce-shopping-website-swamini.onrender.com";
 
 function formatPrice(price) {
   if (!price) return "₹0";
