@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title> BUYBOOM E-COMMERCE WEBSITE | LOGIN </title>
+    <link
+      rel="icon"
+      href="https://yt3.ggpht.com/a/AGF-l78km1YyNXmF0r3-0CycCA0HLA_i6zYn_8NZEg=s900-c-k-c0xffffffff-no-rj-mo"
+      type="image/gif"
+      sizes="16x16"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato&display=swap"
+      rel="stylesheet"
+    />
+    <script src="src/assets/js/jQuery3.4.1.js"></script>
+
+    <style>
+      body {
+        font-family: "Lato", sans-serif;
+        margin: 0;
+      }
+      .auth-container {
+        max-width: 400px;
+        margin: 60px auto;
+        padding: 30px;
+      }
+      .auth-container h2 {
+        text-align: center;
+        margin-bottom: 25px;
+      }
+      .auth-container .form-group {
+        margin-bottom: 18px;
+      }
+      .auth-container label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: bold;
+      }
+      .auth-container input[type="email"],
+      .auth-container input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-family: "Lato", sans-serif;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+      .auth-container .btn-submit {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 4px;
+        background: #333;
+        color: #fff;
+        font-size: 15px;
+        cursor: pointer;
+      }
+      .auth-container .btn-submit:hover {
+        background: #555;
+      }
+      .auth-container .btn-submit:disabled {
+        background: #999;
+        cursor: not-allowed;
+      }
+      .auth-container .switch-line {
+        text-align: center;
+        margin-top: 18px;
+      }
+      .auth-container .error-msg {
+        display: none;
+        color: red;
+        margin-bottom: 15px;
+      }
+    </style>
+
+    <script>
+      function load(url) {
+        var req = new XMLHttpRequest();
+        req.open("GET", url, false);
+        req.send(null);
+        return req.responseText;
+      }
+    </script>
+  </head>
+
+  <body>
+    <div id="1"></div>
+    <script>
+      document.getElementById("1").innerHTML = load("header.html");
+    </script>
+
+    <div id="3">
+      <div class="auth-container">
+        <h2>Login</h2>
+        <div class="error-msg" id="loginError"></div>
+        <form id="loginForm" novalidate>
+          <div class="form-group">
+            <label for="loginEmail">Email</label>
+            <input
+              type="email"
+              id="loginEmail"
+              name="email"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input
+              type="password"
+              id="loginPassword"
+              name="password"
+              placeholder="Enter your password"
+              required
+              minlength="6"
+            />
+          </div>
+          <button type="submit" class="btn-submit" id="loginBtn">Login</button>
+        </form>
+        <div class="switch-line">
+          Don't have an account? <a href="register.html">Register</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="4"></div>
+    <script>
+      document.getElementById("4").innerHTML = load("footer.html");
+    </script>
+
+    <script>
+      // ---- Backend API config + helper (inline, no separate file) ----
+      const API_BASE = "http://localhost:5000/api";
+
+      // NOTE: key must match what header.html / index.html check for
+      // ("buybloom_token"), or the auth-state check on every other page
+      // will never see this token and will bounce back to register.html.
+      function getToken() {
+        return localStorage.getItem("buybloom_token");
+      }
+      function setToken(token) {
+        localStorage.setItem("buybloom_token", token);
+      }
+      function setStoredUser(user) {
+        localStorage.setItem("user", JSON.stringify(user));
+      }
+
+      async function apiFetch(endpoint, options = {}) {
+        const headers = {
+          "Content-Type": "application/json",
+          ...(getToken() ? {Authorization: `Bearer ${getToken()}`} : {}),
+          ...(options.headers || {}),
+        };
+
+        const res = await fetch(`${API_BASE}${endpoint}`, {
+          ...options,
+          headers,
+        });
+
+        let data;
+        try {
+          data = await res.json();
+        } catch (e) {
+          data = {};
+        }
+
+        if (!res.ok) {
+          throw new Error(
+            data.message || `Request failed with status ${res.status}`,
+          );
+        }
+        return data;
+      }
+      // ---- End helper ----
+    </script>
+
+    <script>
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const email = document.getElementById("loginEmail").value.trim();
+          const password = document.getElementById("loginPassword").value;
+          const errorBox = document.getElementById("loginError");
+          const loginBtn = document.getElementById("loginBtn");
+          const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+          errorBox.style.display = "none";
+
+          if (!emailOk || password.length < 6) {
+            errorBox.textContent =
+              "Please enter a valid email and password (min 6 characters).";
+            errorBox.style.display = "block";
+            return;
+          }
+
+          loginBtn.disabled = true;
+          loginBtn.textContent = "Logging in...";
+
+          try {
+            // Calls backend: POST /api/auth/login
+            const data = await apiFetch("/auth/login", {
+              method: "POST",
+              body: JSON.stringify({email, password}),
+            });
+
+            // Store JWT token + user info returned from backend (user data itself
+            // lives in MongoDB now, this is just the session token + cached profile)
+            setToken(data.token);
+            setStoredUser(data.user);
+            if(!(data.user.isAdmin)){
+              window.location.href = "index.html";
+            }
+            else{
+              window.location.href = "exadmidashbord.html";
+            }
+            // Redirect back to home layout
+            
+          } catch (err) {
+            errorBox.textContent =
+              err.message || "Login failed. Please try again.";
+            errorBox.style.display = "block";
+          } finally {
+            loginBtn.disabled = false;
+            loginBtn.textContent = "Login";
+          }
+        });
+    </script>
+  </body>
+</html>

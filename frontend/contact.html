@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> Contact & Support | E-COMMERCE WEBSITE BY EDYODA </title>
+    <link rel="icon"
+        href="https://yt3.ggpht.com/a/AGF-l78km1YyNXmF0r3-0CycCA0HLA_i6zYn_8NZEg=s900-c-k-c0xffffffff-no-rj-mo"
+        type="image/gif" sizes="16x16">
+    <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet">
+    <script src="src/assets/js/jQuery3.4.1.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Lato', sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+        }
+
+        .contact-container {
+            max-width: 1100px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .contact-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .contact-header h1 {
+            font-size: 36px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .contact-header p {
+            font-size: 18px;
+            color: #7f8c8d;
+        }
+
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 40px;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        /* Left Column: Info & Helpline Highlight */
+        .contact-info-panel {
+            background: #2c3e50;
+            color: #fff;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .info-title h2 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #3498db;
+        }
+
+        .helpline-box {
+            background-color: #34495e;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #e74c3c;
+            margin-bottom: 25px;
+        }
+
+        .helpline-box strong {
+            color: #e74c3c;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .info-list {
+            margin: 15px 0;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .info-item i {
+            font-size: 20px;
+            color: #3498db;
+            width: 25px;
+            text-align: center;
+        }
+
+        .info-item p {
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .map-box {
+            border-radius: 6px;
+            overflow: hidden;
+            height: 180px;
+            margin-top: 20px;
+        }
+
+        .map-box iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Right Column: Form with File upload */
+        .contact-form-panel {
+            padding: 40px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 15px;
+            font-family: inherit;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        /* File Upload Area Styling */
+        .file-upload-wrapper {
+            border: 2px dashed #bdc3c7;
+            padding: 15px;
+            border-radius: 6px;
+            background: #fafafa;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .file-upload-wrapper:hover {
+            border-color: #3498db;
+            background: #f1f7fa;
+        }
+
+        .file-upload-wrapper input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-upload-text {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .file-upload-text i {
+            font-size: 24px;
+            color: #3498db;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        #imagePreviewContainer {
+            margin-top: 10px;
+            display: none;
+            text-align: center;
+        }
+
+        #imagePreview {
+            max-width: 120px;
+            max-height: 120px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .submit-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Notifications & Reply Section styles */
+        .replies-panel {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .replies-panel h2 {
+            margin-top: 0;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .reply-card {
+            background: #f8f9fa;
+            border-left: 5px solid #2ecc71;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+
+        .reply-meta {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-bottom: 8px;
+        }
+
+        .admin-text {
+            background: #e8f8f5;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 8px;
+            border-left: 3px solid #2ecc71;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .contact-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+        }
+    </style>
+
+    <script>
+        function load(url) {
+            var req = new XMLHttpRequest();
+            req.open("GET", url, false);
+            req.send(null);
+            return req.responseText;
+        }
+    </script>
+</head>
+
+<body>
+    <div id="1"></div>
+    <script>
+        document.getElementById("1").innerHTML = load("header.html");
+    </script>
+
+    <main class="contact-container">
+        <div class="contact-header">
+            <h1>Support & Helpline</h1>
+            <p>Report issues, track packages, or submit pictures of damaged items for instant return processing.</p>
+        </div>
+
+        <div class="contact-wrapper">
+            <div class="contact-info-panel">
+                <div class="info-title">
+                    <h2>Our Channels</h2>
+                    <p style="color: #bdc3c7; font-size: 14px;">Reach us directly via our direct support networks below.
+                    </p>
+                </div>
+
+                <div class="info-list">
+                    <div class="helpline-box">
+                        <strong><i class="fas fa-exclamation-triangle"></i> Emergency Helpline</strong>
+                        <p style="margin:0; font-size: 18px; font-weight: bold; color: #fff;">+91 9876543210</p>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <p>Buybloom@gmail.com</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p>Building 101, Central Avenue,<br>LA - 902722, United States</p>
+                    </div>
+                </div>
+
+                <div class="map-box">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!113m12!1m8!1m3!1d3305.7332483584824!2d-118.4988718!3d34.0122393!3m2!1i1024!2i768!4f13.1!2m1!1sCentral+Avenue%2C+Los+Angeles!5e0!3m2!1sen!2sus!4v1710000000000!5m2!1sen!2sus"
+                        allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+
+            <div class="contact-form-panel">
+                <form id="contactForm" onsubmit="handleContactSubmit(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">User Name</label>
+                            <input type="text" id="name" required placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" required placeholder="9876543210">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email ID</label>
+                        <input type="email" id="email" required placeholder="john@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Delivery / Billing Address</label>
+                        <input type="text" id="address" required placeholder="Flat No, Street Name, City, Pincode">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Is your product damaged? Upload Photo proof:</label>
+                        <div class="file-upload-wrapper">
+                            <div class="file-upload-text">
+                                <i class="fas fa-camera"></i>
+                                <span>Click to snap or drag & drop damaged item picture here</span>
+                            </div>
+                            <input type="file" id="damagePhoto" accept="image/*" onchange="previewImage(event)">
+                        </div>
+                        <div id="imagePreviewContainer">
+                            <p style="font-size:12px; margin: 4px 0; color:#27ae60;">✓ Image loaded successfully</p>
+                            <img id="imagePreview" src="#" alt="Damage preview">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Issue Description</label>
+                        <textarea id="message" rows="4" required
+                            placeholder="Describe what went wrong with the package structure or product condition..."></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Submit Claim Ticket</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="replies-panel">
+            <h2><i class="fas fa-comments"></i> Admin Reply Box Responses</h2>
+            <div id="userRepliesContainer">
+                <p style="color:#7f8c8d; font-style:italic;">No responses received yet. Submit a message above to
+                    monitor feedback.</p>
+            </div>
+        </div>
+    </main>
+
+    <div id="4"></div>
+    <script>
+        document.getElementById("4").innerHTML = load("footer.html");
+    </script>
+
+    <script>
+        let uploadedImageBase64 = "";
+
+        function previewImage(event) {
+            const input = event.target;
+            const container = document.getElementById('imagePreviewContainer');
+            const preview = document.getElementById('imagePreview');
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    uploadedImageBase64 = e.target.result;
+                    preview.src = e.target.result;
+                    container.style.display = 'block';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const address = document.getElementById('address').value;
+            const message = document.getElementById('message').value;
+
+            const newTicket = {
+                id: "TKT-" + Math.floor(1000 + Math.random() * 9000),
+                date: new Date().toLocaleString(),
+                name: name,
+                phone: phone,
+                email: email,
+                address: address,
+                message: message,
+                image: uploadedImageBase64 || null,
+                adminReply: null // Holder for when the admin replies later
+            };
+
+            let existingTickets = JSON.parse(localStorage.getItem('adminTickets')) || [];
+            existingTickets.push(newTicket);
+            localStorage.setItem('adminTickets', JSON.stringify(existingTickets));
+
+            alert("Hello " + name + ", your message has been sent directly to the Admin Dashboard!");
+
+            document.getElementById('contactForm').reset();
+            document.getElementById('imagePreviewContainer').style.display = 'none';
+            uploadedImageBase64 = "";
+            showUserTickets();
+        }
+
+        function showUserTickets() {
+            const container = document.getElementById('userRepliesContainer');
+            const tickets = JSON.parse(localStorage.getItem('adminTickets')) || [];
+
+            if (tickets.length === 0) return;
+
+            let html = "";
+            tickets.forEach(tkt => {
+                html += `
+                    <div class="reply-card">
+                        <div class="reply-meta"><strong>Ticket ID:</strong> ${tkt.id} | <strong>Sent:</strong> ${tkt.date}</div>
+                        <div><strong>Your Issue:</strong> ${tkt.message}</div>
+                        ${tkt.adminReply ?
+                        `<div class="admin-text"><strong>Admin Response:</strong> ${tkt.adminReply}</div>` :
+                        `<div class="admin-text" style="color:#7f8c8d; border-left-color:#f1c40f;"><strong>Status:</strong> Awaiting admin review...</div>`
+                    }
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // Run checking loop automatically on loading the document assets
+        async function updateHeaderGreeting() {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            try {
+                const res = await fetch('http://localhost:5000/api/auth/profile', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                if (!res.ok) {
+                    localStorage.removeItem('token');
+                    return;
+                }
+                const data = await res.json();
+                const headerSlot = document.getElementById("1");
+                const loginLink = headerSlot ? headerSlot.querySelector('a[href*="login.html"]') : null;
+                if (loginLink && data.user) {
+                    loginLink.textContent = "Hi, " + data.user.name;
+                    loginLink.href = "#";
+                }
+                const nameInput = document.getElementById('name');
+                if (nameInput && data.user) nameInput.value = data.user.name;
+            } catch (err) {
+                console.error('Failed to fetch profile:', err);
+            }
+        }
+
+        window.onload = function () {
+            showUserTickets();
+            updateHeaderGreeting();
+        };
+    </script>
+</body>
+
+</html>

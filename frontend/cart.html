@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BUYBLOOM | YOUR CART</title>
+    <link rel="icon"
+        href="https://yt3.ggpht.com/a/AGF-l78km1YyNXmF0r3-0CycCA0HLA_i6zYn_8NZEg=s900-c-k-c0xffffffff-no-rj-mo"
+        type="image/gif" sizes="16x16">
+    <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+    <script src="src/assets/js/jQuery3.4.1.js"></script>
+
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+            font-family: 'Lato', sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #header-container {
+            width: 100%;
+            order: -1;
+        }
+
+        #footer-container {
+            width: 100%;
+            order: 1;
+        }
+
+        #main-cart-container {
+            flex: 1;
+            max-width: 1000px;
+            width: 100%;
+            margin: 40px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .page-title {
+            font-size: 26px;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .cart-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        @media (max-width: 720px) {
+            .cart-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .cart-items {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .cart-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 14px;
+        }
+
+        .cart-row img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 6px;
+            background: #f9f9f9;
+            flex-shrink: 0;
+        }
+
+        .cart-row-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .cart-row-brand {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #888;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .cart-row-name {
+            font-size: 15px;
+            color: #333;
+            margin: 4px 0;
+        }
+
+        .cart-row-price {
+            font-size: 14px;
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .qty-btn {
+            width: 28px;
+            height: 28px;
+            border: 1px solid #ddd;
+            background: #f4f4f4;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .qty-btn:hover {
+            background: #e8e8e8;
+        }
+
+        .qty-value {
+            min-width: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #c0392b;
+            cursor: pointer;
+            font-size: 19px;
+            margin-top: px;
+        }
+
+        .remove-btn:hover {
+            text-decoration: underline;
+        }
+
+        .cart-summary {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .cart-summary h2 {
+            font-size: 18px;
+            margin: 0 0 18px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 17px;
+            font-weight: bold;
+            border-top: 1px solid #eee;
+            padding-top: 14px;
+            margin-top: 6px;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 13px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 6px;
+            background: #2c3e50;
+            color: #fff;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .checkout-btn:hover {
+            background: #1a252f;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 60px 20px;
+            color: #888;
+        }
+
+        .empty-cart i {
+            font-size: 40px;
+            margin-bottom: 16px;
+            display: block;
+            color: #ccc;
+        }
+
+        .empty-cart a {
+            display: inline-block;
+            margin-top: 16px;
+            color: #fff;
+            background: #333;
+            padding: 10px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+
+    <script>
+        function loadComponent(url, elementId) {
+            var req = new XMLHttpRequest();
+            req.open("GET", url, false);
+            req.send(null);
+            document.getElementById(elementId).innerHTML = req.responseText;
+        }
+    </script>
+</head>
+
+<body>
+
+    <div id="header-container"></div>
+
+    <main id="main-cart-container">
+        <h1 class="page-title">Your Cart</h1>
+        <div id="cartContent"></div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script>
+        const API_BASE_URL = "http://localhost:5000";
+
+        loadComponent("header.html", "header-container");
+        loadComponent("footer.html", "footer-container");
+
+        function formatPrice(num) {
+            return '₹' + num.toLocaleString('en-IN');
+        }
+
+        function getToken() {
+            const token = localStorage.getItem('buybloom_token');
+            if (!token) {
+                window.location.href = 'login.html';
+                return null;
+            }
+            return token;
+        }
+
+        async function fetchCart() {
+            const token = getToken();
+            if (!token) return null;
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/cart`, {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                const data = await res.json();
+                if (!res.ok || !data.success) return null;
+                return data.cart;
+            } catch (err) {
+                console.error('Failed to fetch cart:', err);
+                return null;
+            }
+        }
+
+        async function changeQty(productId, currentQty, delta) {
+            const token = getToken();
+            if (!token) return;
+
+            const newQty = currentQty + delta;
+
+            try {
+                if (newQty <= 0) {
+                    await fetch(`${API_BASE_URL}/api/cart/${productId}`, {
+                        method: 'DELETE',
+                        headers: { 'Authorization': 'Bearer ' + token }
+                    });
+                } else {
+                    const res = await fetch(`${API_BASE_URL}/api/cart/${productId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + token
+                        },
+                        body: JSON.stringify({ quantity: newQty })
+                    });
+                    const data = await res.json();
+                    if (!res.ok || !data.success) {
+                        alert(data.message || 'Failed to update quantity.');
+                        return;
+                    }
+                }
+                renderCart();
+            } catch (err) {
+                console.error('Failed to update quantity:', err);
+                alert('Something went wrong updating the cart.');
+            }
+        }
+
+        async function removeItem(productId) {
+            const token = getToken();
+            if (!token) return;
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/cart/${productId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                const data = await res.json();
+
+                if (!res.ok || !data.success) {
+                    alert(data.message || 'Failed to remove item.');
+                    return;
+                }
+                renderCart();
+            } catch (err) {
+                console.error('Failed to remove item:', err);
+                alert('Something went wrong removing the item.');
+            }
+        }
+
+        async function renderCart() {
+            const container = document.getElementById('cartContent');
+            container.innerHTML = '<p style="text-align:center; padding: 40px 0;">Loading...</p>';
+
+            const cart = await fetchCart();
+
+            if (!cart || !cart.items || cart.items.length === 0) {
+                container.innerHTML = `
+                <div class="empty-cart">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    Your cart is empty.
+                    <br>
+                    <a href="index.html">Continue shopping</a>
+                </div>
+            `;
+                return;
+            }
+
+            let itemsHtml = '';
+            let subtotal = 0;
+
+            cart.items.forEach((item) => {
+                const product = item.product;
+                const unitPrice = item.price;
+                const qty = item.quantity;
+                const lineTotal = unitPrice * qty;
+                subtotal += lineTotal;
+
+                itemsHtml += `
+                <div class="cart-row">
+                    <img src="${product?.image || ''}" alt="${product?.name || 'Product'}">
+                    <div class="cart-row-info">
+                        <div class="cart-row-brand">${product?.brand || ''}</div>
+                        <div class="cart-row-name">${product?.name || 'Product'}</div>
+                        <div class="cart-row-price">${formatPrice(lineTotal)}</div>
+                        <div class="qty-controls">
+                            <button class="qty-btn" onclick="changeQty('${product?._id}', ${qty}, -1)">-</button>
+                            <span class="qty-value">${qty}</span>
+                            <button class="qty-btn" onclick="changeQty('${product?._id}', ${qty}, 1)">+</button>
+                        </div>
+                        <button class="remove-btn" onclick="removeItem('${product?._id}')">Remove</button>
+                    </div>
+                </div>
+            `;
+            });
+
+            const shipping = subtotal > 0 ? 99 : 0;
+            const total = subtotal + shipping;
+
+            container.innerHTML = `
+            <div class="cart-layout">
+                <div class="cart-items">${itemsHtml}</div>
+                <div class="cart-summary">
+                    <h2>Order Summary</h2>
+                    <div class="summary-row"><span>Subtotal</span><span>${formatPrice(subtotal)}</span></div>
+                    <div class="summary-row"><span>Shipping</span><span>${formatPrice(shipping)}</span></div>
+                    <div class="summary-total"><span>Total</span><span>${formatPrice(total)}</span></div>
+                    <button class="checkout-btn" onclick="window.location.href='buy.html'">Proceed to Checkout</button>
+                </div>
+            </div>
+        `;
+        }
+
+        renderCart();
+    </script>
+
+</body>
+
+</html>

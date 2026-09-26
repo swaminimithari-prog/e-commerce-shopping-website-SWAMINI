@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title> BUYBOOM E-COMMERCE WEBSITE | REGISTER </title>
+    <link
+      rel="icon"
+      href="https://yt3.ggpht.com/a/AGF-l78km1YyNXmF0r3-0CycCA0HLA_i6zYn_8NZEg=s900-c-k-c0xffffffff-no-rj-mo"
+      type="image/gif"
+      sizes="16x16"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato&display=swap"
+      rel="stylesheet"
+    />
+    <script src="src/assets/js/jQuery3.4.1.js"></script>
+
+    <style>
+      body {
+        font-family: "Lato", sans-serif;
+        margin: 0;
+      }
+      .auth-container {
+        max-width: 400px;
+        margin: 60px auto;
+        padding: 30px;
+      }
+      .auth-container h2 {
+        text-align: center;
+        margin-bottom: 25px;
+      }
+      .auth-container .form-group {
+        margin-bottom: 18px;
+      }
+      .auth-container label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: bold;
+      }
+      .auth-container input[type="text"],
+      .auth-container input[type="email"],
+      .auth-container input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-family: "Lato", sans-serif;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+      .auth-container .btn-submit {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 4px;
+        background: #333;
+        color: #fff;
+        font-size: 15px;
+        cursor: pointer;
+      }
+      .auth-container .btn-submit:hover {
+        background: #555;
+      }
+      .auth-container .btn-submit:disabled {
+        background: #999;
+        cursor: not-allowed;
+      }
+      .auth-container .switch-line {
+        text-align: center;
+        margin-top: 18px;
+      }
+      .auth-container .error-msg {
+        display: none;
+        color: red;
+        margin-bottom: 15px;
+      }
+      .auth-container .terms-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 18px;
+        font-size: 14px;
+      }
+    </style>
+
+    <script>
+      function load(url) {
+        var req = new XMLHttpRequest();
+        req.open("GET", url, false);
+        req.send(null);
+        return req.responseText;
+      }
+    </script>
+  </head>
+
+  <body>
+    <div id="1"></div>
+    <script>
+      document.getElementById("1").innerHTML = load("header.html");
+    </script>
+
+    <div id="3">
+      <div class="auth-container">
+        <h2>Register</h2>
+        <div class="error-msg" id="registerError"
+          >Please check the fields and try again.</div
+        >
+        <form id="registerForm" novalidate>
+          <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input
+              type="text"
+              id="fullName"
+              name="fullName"
+              placeholder="Enter your full name"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="registerEmail">Email</label>
+            <input
+              type="email"
+              id="registerEmail"
+              name="email"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="registerPassword">Password</label>
+            <input
+              type="password"
+              id="registerPassword"
+              name="password"
+              placeholder="Create a password"
+              required
+              minlength="6"
+            />
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              placeholder="Re-enter your password"
+              required
+              minlength="6"
+            />
+          </div>
+          <div class="terms-row">
+            <input type="checkbox" id="agreeTerms" required />
+            <label for="agreeTerms" style="margin: 0; font-weight: normal"
+              >I agree to the Terms & Conditions</label
+            >
+          </div>
+          <button type="submit" class="btn-submit" id="registerSubmitBtn"
+            >Register</button
+          >
+        </form>
+        <div class="switch-line">
+          Already have an account? <a href="login.html">Login</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="4"></div>
+    <script>
+      document.getElementById("4").innerHTML = load("footer.html");
+    </script>
+
+    <script>
+      const API_BASE = "http://localhost:5000/api"; // update to your deployed backend URL
+
+      document
+        .getElementById("registerForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const name = document.getElementById("fullName").value.trim();
+          const email = document.getElementById("registerEmail").value.trim();
+          const password = document.getElementById("registerPassword").value;
+          const confirm = document.getElementById("confirmPassword").value;
+          const agreed = document.getElementById("agreeTerms").checked;
+          const errorBox = document.getElementById("registerError");
+          const submitBtn = document.getElementById("registerSubmitBtn");
+          const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+          // Client-side validation stays the same
+          if (
+            !name ||
+            !emailOk ||
+            password.length < 6 ||
+            password !== confirm ||
+            !agreed
+          ) {
+            errorBox.textContent = "Please check the fields and try again.";
+            errorBox.style.display = "block";
+            return;
+          }
+          errorBox.style.display = "none";
+
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Creating account...";
+
+          try {
+            const res = await fetch(`${API_BASE}/auth/register`, {
+              method: "POST",
+              headers: {"Content-Type": "application/json"},
+              body: JSON.stringify({name, email, password}),
+            });
+            const data = await res.json();
+
+            if (!data.success) {
+              throw new Error(data.message || "Registration failed");
+            }
+
+            // Registration returns a token immediately — log the user
+            // straight in instead of making them log in again.
+            localStorage.setItem('buybloom_token', data.token);
+
+            window.location.href = "index.html";
+          } catch (err) {
+            errorBox.textContent =
+              err.message || "Something went wrong. Please try again.";
+            errorBox.style.display = "block";
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Register";
+          }
+        });
+    </script>
+  </body>
+</html>

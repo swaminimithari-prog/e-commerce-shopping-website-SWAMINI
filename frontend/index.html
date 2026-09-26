@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title> E-COMMERCE WEBSITE BY EDYODA | CREATED BY PRIYANKA SHARMA </title>
+    <link
+      rel="icon"
+      href="https://yt3.ggpht.com/a/AGF-l78km1YyNXmF0r3-0CycCA0HLA_i6zYn_8NZEg=s900-c-k-c0xffffffff-no-rj-mo"
+      type="image/gif"
+      sizes="16x16"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato&display=swap"
+      rel="stylesheet"
+    />
+    <script src="src/assets/js/jQuery3.4.1.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css"
+    />
+
+    <script>
+      // ─── Backend config ─────────────────────────────────────────
+      const API_BASE = "http://localhost:5000/api"; // change to your deployed backend URL
+
+      (function () {
+        // A token in localStorage is the only valid signal of "logged in" now -
+        // actual user data always comes from the backend, never from localStorage.
+        const token = localStorage.getItem("buybloom_token");
+        // If user has no token (never registered/logged in), force them to Register first
+        if (!token) {
+          window.location.href = "register.html";
+        }
+      })();
+
+      // Global load function for dynamic components
+      function load(url) {
+        var req = new XMLHttpRequest();
+        req.open("GET", url, false);
+        req.send(null);
+        return req.responseText;
+      }
+
+      function authHeaders() {
+        const token = localStorage.getItem("buybloom_token");
+        return {
+          "Content-Type": "application/json",
+          ...(token ? {Authorization: `Bearer ${token}`} : {}),
+        };
+      }
+    </script>
+
+    <style>
+      /* Container positioning check for overlay placement */
+      .imgContainer,
+      .product-card,
+      #box {
+        position: relative;
+        padding-bottom: 45px; /* Creates uniform space at the bottom for action buttons */
+        box-sizing: border-box;
+      }
+
+      /* NEW BUTTONS ROW LAYOUT STYLING */
+      .custom-action-container {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        display: flex;
+        gap: 8px;
+        z-index: 98;
+      }
+
+      .btn-action-custom {
+        flex: 1;
+        padding: 8px 5px;
+        font-size: 12px;
+        font-family: "Lato", sans-serif;
+        font-weight: bold;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition:
+          background 0.2s ease,
+          transform 0.1s ease;
+        text-align: center;
+      }
+
+      .btn-action-custom:active {
+        transform: scale(0.97);
+      }
+
+      .btn-cart-custom {
+        background-color: #f39c12;
+        color: #ffffff;
+      }
+
+      .btn-cart-custom:hover {
+        background-color: #e67e22;
+      }
+
+      .btn-buy-custom {
+        background-color: #2c3e50;
+        color: #ffffff;
+      }
+
+      .btn-buy-custom:hover {
+        background-color: #1a252f;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="header-slot"></div>
+    <script>
+      document.getElementById("header-slot").innerHTML = load("header.html");
+    </script>
+    <div id="2"></div>
+    <script>
+      document.getElementById("2").innerHTML = load("slider.html");
+    </script>
+    <div id="3"></div>
+    <script>
+      document.getElementById("3").innerHTML = load("content.html");
+    </script>
+    <div id="5"></div>
+    <script>
+      document.getElementById("5").innerHTML = load("contentDetails.html");
+    </script>
+    <div id="4"></div>
+    <script>
+      document.getElementById("4").innerHTML = load("footer.html");
+    </script>
+
+  </body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $("#containerSlider").slick({
+        dots: true,
+        infinite: true,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 1500,
+      });
+    });
+  </script>
+  <script src="src/assets/js/content.js"></script>
+  <!-- <script src="src/assets/js/contentDetails.js"></script> -->
+  <script>
+    // Handles changing the header login link to a username greeting.
+    // Header.html now fetches the user's name from the backend itself
+    // (GET /api/auth/profile), so this just re-checks in case header.html
+    // finished loading after this script ran.
+    (function () {
+      const token = localStorage.getItem("buybloom_token");
+      if (!token) return;
+
+      fetch(`${API_BASE}/auth/profile`, {
+        method: "GET",
+        headers: authHeaders(),
+      })
+        .then((res) => (res.ok ? res.json() : Promise.reject()))
+        .then((data) => {
+          if (!data.success || !data.user) return;
+          const loginLink =
+            document.querySelector('#header-slot a[href*="login.html"]') ||
+            document.querySelector('#header-slot a[href*="register.html"]');
+          if (loginLink) {
+            loginLink.textContent = "Hi, " + data.user.name;
+            loginLink.href = "profile.html";
+          }
+        })
+        .catch(() => {
+          // Invalid/expired token - clear it
+          localStorage.removeItem("buybloom_token");
+        });
+    })();
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      // Wait briefly for content.js to asynchronously load/render cards
+      setTimeout(function () {
+        const productCards = document.querySelectorAll(".product-card, #box");
+
+        productCards.forEach((card, idx) => {
+          // Expecting content.js to set data-product-id="<mongo _id>" on each card.
+          const productId = card.dataset.productId || card.id || null;
+          // ASSEMBLE AND INJECT CART & BUY BUTTONS
+          const actionContainer = document.createElement("div");
+          actionContainer.className = "custom-action-container";
+
+          // Add To Cart Button - now calls POST /api/cart instead of a fake alert
+          const cartBtn = document.createElement("button");
+          cartBtn.className = "btn-action-custom btn-cart-custom";
+          cartBtn.innerHTML = '<i class="fas fa-shopping-cart"></i> Cart';
+          cartBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (!productId) {
+              alert(
+                "This product is missing an ID (data-product-id) - cannot add to cart.",
+              );
+              return;
+            }
+
+            const token = localStorage.getItem("buybloom_token");
+            if (!token) {
+              alert("Please log in to add items to your cart.");
+              window.location.href = "login.html";
+              return;
+            }
+
+            fetch(`${API_BASE}/cart`, {
+              method: "POST",
+              headers: authHeaders(),
+              body: JSON.stringify({productId: productId, quantity: 1}),
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                if (data.success) {
+                  alert("Item successfully added to cart!");
+                } else {
+                  alert(data.message || "Failed to add item to cart.");
+                }
+              })
+              .catch(() =>
+                alert("Failed to add item to cart. Please try again."),
+              );
+          });
+
+          // Buy Now Button - adds to cart then sends user to checkout/cart page
+          const buyBtn = document.createElement("button");
+          buyBtn.className = "btn-action-custom btn-buy-custom";
+          buyBtn.innerHTML = "Buy Now";
+          buyBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (!productId) {
+              alert(
+                "This product is missing an ID (data-product-id) - cannot proceed to checkout.",
+              );
+              return;
+            }
+
+            const token = localStorage.getItem("buybloom_token");
+            if (!token) {
+              alert("Please log in to continue to checkout.");
+              window.location.href = "login.html";
+              return;
+            }
+
+            fetch(`${API_BASE}/cart`, {
+              method: "POST",
+              headers: authHeaders(),
+              body: JSON.stringify({productId: productId, quantity: 1}),
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                if (data.success) {
+                  window.location.href = "cart.html";
+                } else {
+                  alert(data.message || "Failed to proceed to checkout.");
+                }
+              })
+              .catch(() =>
+                alert("Failed to proceed to checkout. Please try again."),
+              );
+          });
+
+          actionContainer.appendChild(cartBtn);
+          actionContainer.appendChild(buyBtn);
+          card.appendChild(actionContainer);
+        });
+      }, 300);
+    });
+  </script>
+</html>

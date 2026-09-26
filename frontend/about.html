@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> About Us | E-COMMERCE WEBSITE BY EDYODA </title>
+    <!-- favicon -->
+    <link rel="icon" href="https://yt3.ggpht.com/a/AGF-l78km1YyNXmF0r3-0CycCA0HLA_i6zYn_8NZEg=s900-c-k-c0xffffffff-no-rj-mo" type="image/gif" sizes="16x16">
+    <!-- header links -->
+    <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet">
+    <script src="src/assets/js/jQuery3.4.1.js"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Lato', sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+        }
+        .about-container {
+            max-width: 1000px;
+            margin: 60px auto;
+            padding: 40px 20px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        .about-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .about-header h1 {
+            font-size: 36px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .about-header p {
+            font-size: 18px;
+            color: #7f8c8d;
+        }
+        .section-title {
+            font-size: 24px;
+            color: #000000;
+            border-bottom: 2px solid #eceff1;
+            padding-bottom: 10px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        .intro-text {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #555;
+        }
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        .advantage-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 6px;
+            border-left: 4px solid #2980b9;
+            transition: transform 0.2s ease;
+        }
+        .advantage-card:hover {
+            transform: translateY(-3px);
+        }
+        .advantage-card h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .advantage-card h3 i {
+            color: #2980b9;
+        }
+        .advantage-card p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 0;
+        }
+    </style>
+
+    <script>
+        function load(url)
+        {
+            var req = new XMLHttpRequest();
+            req.open("GET", url, false);
+            req.send(null);
+            return req.responseText;
+        }
+    </script>
+</head>
+<body>
+    <!-- HEADER -->
+    <div id="1"></div>
+    <script>
+        document.getElementById("1").innerHTML = load("header.html");
+    </script>
+
+    <!-- ABOUT MAIN CONTENT -->
+    <main class="about-container">
+        <div class="about-header">
+            <h1>Buybloom E-Commerce Store</h1>
+            <p>Your one-stop destination for premium, hassle-free online shopping.</p>
+        </div>
+
+        <h2 class="section-title">Our Commitment to Quality</h2>
+        <p class="intro-text">
+            Welcome to our e-commerce platform. We believe that shopping should be simple, efficient, and above all, reliable. Our mission is to bridge the gap between high-quality manufacturing and everyday consumer needs. Every single product listed in our inventory undergoes a strict quality screening process to guarantee it meets our durability and performance standards before it ever reaches your doorstep.
+        </p>
+
+        <h2 class="section-title">Why Choose Us? (Our Advantages)</h2>
+        <div class="advantages-grid">
+            <div class="advantage-card">
+                <h3><i class="fas fa-award"></i> Premium Quality Assured</h3>
+                <p>We partner exclusively with verified suppliers and premium brands. If it doesn't meet our strict quality benchmark, we don't sell it.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <h3><i class="fas fa-truck"></i> Fast & Trackable Delivery</h3>
+                <p>Your time matters. Enjoy ultra-reliable, express shipping options equipped with live end-to-end milestone tracking.</p>
+            </div>
+
+            <div class="advantage-card">
+                <h3><i class="fas fa-shield-alt"></i> 100% Secure Checkout</h3>
+                <p>Shop with ultimate peace of mind. Our system utilizes industry-standard cryptographic encryption to shield your transactions.</p>
+            </div>
+
+            <div class="advantage-card">
+                <h3><i class="fas fa-undo-alt"></i> Hassle-Free Returns</h3>
+                <p>Not satisfied with your purchase? No problem. Our flexible, transparent 30-day return policy makes refunds stress-free.</p>
+            </div>
+
+            <div class="advantage-card">
+                <h3><i class="fas fa-headset"></i> 24/7 Dedicated Support</h3>
+                <p>Our friendly and knowledgeable customer success crew is standing by around the clock to assist you with any questions or issues.</p>
+            </div>
+
+            <div class="advantage-card">
+                <h3><i class="fas fa-tags"></i> Unbeatable Pricing</h3>
+                <p>By cutting out extraneous third-party middlemen, we pass structural cost savings directly onto your wallet via daily deals.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <div id="4"></div>
+    <script>
+        document.getElementById("4").innerHTML = load("footer.html");
+    </script>
+
+    <!-- Handle logged-in greeting context -->
+    <!-- Handle logged-in greeting context -->
+<script>
+    (async function() {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+
+        try {
+            const res = await fetch('http://localhost:5000/api/auth/profile', {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+
+            if (!res.ok) {
+                // Token invalid/expired - clear it
+                localStorage.removeItem('token');
+                return;
+            }
+
+            const data = await res.json();
+            const loginLink = document.getElementById("1").querySelector('a[href*="login.html"]');
+            if (loginLink && data.user) {
+                loginLink.textContent = "Hi, " + data.user.name;
+                loginLink.href = "#";
+            }
+        } catch (err) {
+            console.error('Failed to fetch profile:', err);
+        }
+    })();
+</script>
+</body>
+</html>

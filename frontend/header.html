@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title> HEADER | E-COMMERCE WEBSITE </title>
+
+    <!-- favicon -->
+    <link
+      rel="icon"
+      href="https://yt3.ggpht.com/a/AGF-l78km1YyNXmF0r3-0CycCA0HLA_i6zYn_8NZEg=s900-c-k-c0xffffffff-no-rj-mo"
+      type="image/gif"
+      sizes="16x16"
+    />
+
+    <!-- EXTERNAL LINKS -->
+    <link rel="stylesheet" href="src/assets/css/header.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* GOOGLE-STYLE SEARCH BAR CONFIGURATION */
+      #search {
+        display: flex;
+        align-items: center;
+        background: #ffffff;
+        border: 1px solid #dfe1e5;
+        border-radius: 24px;
+        padding: 0 16px;
+        height: 44px;
+        width: 100%;
+        max-width: 580px;
+        margin: 0 20px;
+        box-sizing: border-box;
+        transition:
+          box-shadow 0.2s ease,
+          border-color 0.2s ease;
+      }
+
+      #search:hover,
+      #search:focus-within {
+        box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+        border-color: rgba(223, 225, 229, 0);
+      }
+
+      #search .search-icon {
+        color: #9aa0a6;
+        font-size: 16px;
+        margin-right: 12px;
+      }
+
+      /* Action Icons (Mic & Camera Container) */
+      .search-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-left: 8px;
+      }
+
+      #search .mic-icon {
+        color: #4285f4;
+        font-size: 16px;
+        cursor: pointer;
+        transition: transform 0.1s ease;
+      }
+
+      #search .mic-icon.is-active {
+        color: #198754;
+      }
+
+      #search .camera-icon {
+        color: #4285f4;
+        font-size: 16px;
+        cursor: pointer;
+        transition: transform 0.1s ease;
+      }
+
+      #search .camera-icon.is-active {
+        color: #198754;
+      }
+
+      #search .mic-icon:hover,
+      #search .camera-icon:hover {
+        transform: scale(1.1);
+      }
+
+      .wishlist-heart {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        z-index: 20;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border: 1px solid #dddddd;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.96);
+        color: #555555;
+        cursor: pointer;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.16);
+      }
+
+      .wishlist-heart:hover,
+      .wishlist-heart.is-liked {
+        color: #e53935;
+      }
+
+      .wishlist-heart i {
+        font-size: 17px;
+      }
+
+      #search #input {
+        border: none !important;
+        outline: none !important;
+        background: transparent;
+        width: 100%;
+        height: 100%;
+        font-family: "Lato", sans-serif;
+        font-size: 16px;
+        color: #202124;
+        padding: 0;
+      }
+
+      #search #input::placeholder {
+        color: #9aa0a6;
+        opacity: 1;
+        /* Added transition so changing placeholders look smoother */
+        transition: opacity 0.3s ease-in-out;
+      }
+
+      /* MAIN CONTAINER ADJUSTMENTS */
+      #container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        width: 100%;
+        padding: 10px 20px;
+        box-sizing: border-box;
+      }
+
+      #shopName {
+        flex-shrink: 0;
+      }
+
+      #shopName a {
+        text-decoration: none;
+        color: #333;
+        font-size: 22px;
+        letter-spacing: 1px;
+      }
+
+      #collection {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        flex-shrink: 0;
+        margin-left: 12px;
+      }
+
+      #collection a {
+        text-decoration: none;
+        color: #333;
+        font-size: 14px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      #search {
+        flex: 1 1 320px;
+        min-width: 280px;
+        max-width: 580px;
+        margin: 0;
+      }
+
+      /* AUTH & ACTION NAVIGATION WRAPPERS */
+      .auth-buttons {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-left: 10px;
+        vertical-align: middle;
+      }
+
+      .auth-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        gap: 6px;
+        text-decoration: none;
+        height: 40px;
+        min-width: 96px;
+        width: 96px;
+        padding: 0 12px;
+        font-size: 13px;
+        font-weight: bold;
+        border-radius: 20px;
+        transition: all 0.2s ease-in-out;
+        font-family: "Lato", sans-serif;
+        box-sizing: border-box;
+        white-space: nowrap;
+        line-height: 1;
+      }
+
+      .auth-btn i,
+      .auth-btn span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .btn-login {
+        color: #333;
+        border: 1px solid #333;
+        background: transparent;
+        cursor: pointer;
+      }
+
+      .btn-login:hover {
+        background: #f1f2f6;
+      }
+
+      .btn-profile {
+        color: #fff;
+        background: #333;
+        border: 1px solid #333;
+      }
+
+      .btn-profile:hover {
+        background: #000;
+        border-color: #000;
+      }
+
+      .btn-cart {
+        color: #fff;
+        background: #333;
+        border: 1px solid #333;
+      }
+
+      .btn-cart:hover {
+        background: #000;
+        border-color: #000;
+      }
+
+      .btn-cart .addedToCart {
+        font-size: 13px;
+      }
+
+      #user {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-shrink: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <section>
+        <div id="container">
+          <!-- SHOP NAME -->
+          <div id="shopName">
+            <a href="index.html"><b>BUY</b>BLOOM</a>
+          </div>
+
+          <!-- COLLECTIONS -->
+          <div id="collection">
+            <div id="clothing"><a href="clothing.html"> CLOTHING </a></div>
+            <div id="accessories"
+              ><a href="accessories.html"> ACCESSORIES </a></div
+            >
+          </div>
+
+          <!-- SEARCH BAR WITH MIC & CAMERA -->
+          <div id="search">
+            <i class="fas fa-search search-icon"></i>
+            <!-- Notice: Placeholder starts with the first item -->
+            <input
+              type="text"
+              id="input"
+              name="searchBox"
+              placeholder="Search clothes..."
+            />
+
+            <div class="search-actions">
+              <i
+                class="fas fa-microphone mic-icon"
+                title="Search with your voice"
+                role="button"
+                tabindex="0"
+                aria-label="Search with your voice"
+                onclick="window.startVoiceSearch()"
+                onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); window.startVoiceSearch(); }"
+              ></i>
+              <i
+                class="fas fa-camera camera-icon"
+                title="Choose a photo"
+                role="button"
+                tabindex="0"
+                aria-label="Choose a photo"
+                onclick="document.getElementById('image-search-input').click()"
+                onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); document.getElementById('image-search-input').click(); }"
+              ></i>
+              <input
+                id="image-search-input"
+                type="file"
+                accept="image/*"
+                capture="environment"
+                hidden
+                onchange="window.handleImageSearch(this)"
+              />
+            </div>
+          </div>
+
+          <!-- USER SECTION -->
+          <div id="user">
+            <div class="auth-buttons">
+              <a href="login.html" class="auth-btn btn-login" id="loginBtn"
+                >Login</a
+              >
+
+              <a href="cart.html" class="auth-btn btn-cart">
+                <i class="fas fa-shopping-cart addedToCart"></i>
+                <span>Cart</span>
+              </a>
+
+              <a href="profile.html" class="auth-btn btn-profile">
+                <i class="fas fa-user"></i> Profile
+              </a>
+
+              <a href="wishlist.html" class="auth-btn btn-profile">
+                <i class="fas fa-heart"></i> Wishlist
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </header>
+
+    <!--
+      IMPORTANT: header.html is injected into every page via
+      `.innerHTML = xhr.responseText`. Browsers NEVER execute <script>
+      tags inserted this way, so a normal <script> block here would be
+      dead code on every page that includes this file.
+
+      Inline event-handler attributes (onerror, onload, etc.) DO still
+      fire even when inserted via innerHTML, so this hidden, deliberately
+      broken image is used purely to trigger our header logic reliably,
+      on every page, with no changes needed anywhere else.
+    -->
+    <img
+      src="__header_auth_trigger__.png"
+      alt=""
+      style="display: none"
+      onerror="this.remove(); (function () {
+        var phrases = ['Search clothes...', 'Search watches...', 'Search shoes...', 'Search accessories...'];
+        var currentIndex = 0;
+        var searchInput = document.getElementById('input');
+        if (searchInput) {
+          setInterval(function () {
+            currentIndex = (currentIndex + 1) % phrases.length;
+            searchInput.placeholder = phrases[currentIndex];
+          }, 2000);
+
+          searchInput.addEventListener('input', function () {
+            var query = searchInput.value.trim().toLowerCase();
+            var cards = document.querySelectorAll('.product-card, #box');
+            var visibleCount = 0;
+            cards.forEach(function (card) {
+              var matches = !query || card.textContent.toLowerCase().indexOf(query) !== -1;
+              card.style.display = matches ? '' : 'none';
+              if (matches) visibleCount += 1;
+            });
+
+            var resultMessage = document.getElementById('search-result-message');
+            if (!resultMessage && cards.length) {
+              resultMessage = document.createElement('p');
+              resultMessage.id = 'search-result-message';
+              resultMessage.style.cssText = 'display:none;text-align:center;width:100%;color:#666;font-family:Lato,sans-serif;';
+              var firstGrid = cards[0].parentElement;
+              if (firstGrid) firstGrid.parentElement.insertBefore(resultMessage, firstGrid);
+            }
+            if (resultMessage) {
+              resultMessage.textContent = visibleCount ? '' : 'No products found';
+              resultMessage.style.display = visibleCount ? 'none' : 'block';
+            }
+          });
+        }
+
+        window.handleImageSearch = function (input) {
+          var file = input.files && input.files[0];
+          var cameraIcon = document.querySelector('#search .camera-icon');
+          if (!file || !cameraIcon) return;
+
+          var searchInput = document.getElementById('input');
+          if (searchInput) searchInput.value = file.name;
+          cameraIcon.classList.add('is-active');
+          cameraIcon.title = 'Photo selected: ' + file.name;
+        };
+
+        window.startVoiceSearch = function () {
+          var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+          var microphoneIcon = document.querySelector('#search .mic-icon');
+          var searchInput = document.getElementById('input');
+          if (!SpeechRecognition || !microphoneIcon || !searchInput) {
+            if (microphoneIcon) microphoneIcon.title = 'Voice search is not supported by this browser';
+            return;
+          }
+
+          var recognition = new SpeechRecognition();
+          recognition.lang = 'en-US';
+          recognition.interimResults = false;
+          recognition.maxAlternatives = 1;
+          microphoneIcon.classList.add('is-active');
+          microphoneIcon.title = 'Listening... Speak now';
+          recognition.onstart = function () {
+            microphoneIcon.title = 'Listening... Speak now';
+          };
+          recognition.onresult = function (event) {
+            searchInput.value = event.results[0][0].transcript;
+          };
+          recognition.onerror = function (event) {
+            microphoneIcon.title = event.error === 'not-allowed'
+              ? 'Allow microphone access in browser settings'
+              : 'Voice search could not hear you';
+          };
+          recognition.onend = function () {
+            microphoneIcon.classList.remove('is-active');
+            microphoneIcon.title = 'Search with your voice';
+          };
+
+          var beginRecognition = function () {
+            try {
+              recognition.start();
+            } catch (error) {
+              microphoneIcon.classList.remove('is-active');
+              microphoneIcon.title = 'Voice search could not start';
+            }
+          };
+
+          if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({audio: true})
+              .then(function (stream) {
+                stream.getTracks().forEach(function (track) { track.stop(); });
+                beginRecognition();
+              })
+              .catch(function () {
+                microphoneIcon.classList.remove('is-active');
+                microphoneIcon.title = window.isSecureContext
+                  ? 'Allow microphone access in browser settings'
+                  : 'Open this page through localhost or HTTPS';
+              });
+          } else {
+            beginRecognition();
+          }
+        };
+
+        window.addWishlistHeart = function (card, index) {
+          if (!card || card.querySelector('.wishlist-heart')) return;
+
+          var productKey = card.dataset.productId || card.id || 'product-' + index;
+          var savedProducts = JSON.parse(localStorage.getItem('likedProducts') || '[]');
+          var heart = document.createElement('button');
+          var liked = savedProducts.indexOf(productKey) !== -1;
+          heart.type = 'button';
+          heart.className = 'wishlist-heart' + (liked ? ' is-liked' : '');
+          heart.setAttribute('aria-label', liked ? 'Remove from wishlist' : 'Add to wishlist');
+          heart.title = liked ? 'Remove from wishlist' : 'Add to wishlist';
+          var heartIcon = document.createElement('i');
+          heartIcon.className = (liked ? 'fas' : 'far') + ' fa-heart';
+          heart.appendChild(heartIcon);
+          heart.onclick = function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            var products = JSON.parse(localStorage.getItem('likedProducts') || '[]');
+            var icon = heart.querySelector('i');
+            var isLiked = heart.classList.toggle('is-liked');
+            if (isLiked) {
+              if (products.indexOf(productKey) === -1) products.push(productKey);
+              icon.className = 'fas fa-heart';
+            } else {
+              products = products.filter(function (id) { return id !== productKey; });
+              icon.className = 'far fa-heart';
+            }
+            heart.setAttribute('aria-label', isLiked ? 'Remove from wishlist' : 'Add to wishlist');
+            heart.title = isLiked ? 'Remove from wishlist' : 'Add to wishlist';
+            localStorage.setItem('likedProducts', JSON.stringify(products));
+          };
+          card.appendChild(heart);
+        };
+
+        var wishlistIndex = 0;
+        var addWishlistHearts = function () {
+          document.querySelectorAll('.product-card, #box').forEach(function (card) {
+            window.addWishlistHeart(card, wishlistIndex++);
+          });
+        };
+        addWishlistHearts();
+        new MutationObserver(addWishlistHearts).observe(document.body, { childList: true, subtree: true });
+
+        var API_BASE = 'http://localhost:5000/api';
+        var token = localStorage.getItem('buybloom_token');
+        var loginBtn = document.getElementById('loginBtn');
+        if (token && loginBtn) {
+          fetch(API_BASE + '/auth/profile', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+          })
+            .then(function (res) {
+              if (!res.ok) throw new Error('Invalid or expired session');
+              return res.json();
+            })
+            .then(function (data) {
+              if (data.success && data.user) {
+                loginBtn.textContent = 'Hi, ' + (data.user.name).split(' ')[0]
+                loginBtn.href = 'profile.html';
+              }
+            })
+            .catch(function () {
+              localStorage.removeItem('buybloom_token');
+            });
+        }
+      })();"
+    />
+  </body>
+</html>

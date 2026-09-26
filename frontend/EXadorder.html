@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> BUYBLOOM | ADMIN ORDERS </title>
+    <link
+      rel="icon"
+      href="https://yt3.ggpht.com/a/AGF-l78km1YyNXmF0r3-0CycCA0HLA_i6zYn_8NZEg=s900-c-k-c0xffffffff-no-rj-mo"
+      type="image/gif"
+      sizes="16x16"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="src/assets/js/jQuery3.4.1.js"></script>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        font-family: "Lato", sans-serif;
+        background-color: #f4f6f9;
+        display: flex;
+        flex-direction: column;
+      }
+
+      #header-container {
+        width: 100%;
+      }
+
+      #dashboard-wrapper {
+        display: flex;
+        flex: 1;
+        min-height: calc(100vh - 120px);
+      }
+
+      .sidebar {
+        width: 240px;
+        background-color: #2c3e50;
+        color: #fff;
+        padding-top: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .sidebar-menu {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+      .sidebar h3 {
+        text-align: center;
+        font-size: 18px;
+        margin-bottom: 30px;
+        letter-spacing: 1px;
+        color: #ecf0f1;
+      }
+      .sidebar a {
+        display: flex;
+        align-items: center;
+        padding: 15px 25px;
+        color: #bdc3c7;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 15px;
+        cursor: pointer;
+      }
+      .sidebar a i {
+        margin-right: 15px;
+        width: 20px;
+        text-align: center;
+      }
+      .sidebar a:hover,
+      .sidebar a.active {
+        background-color: #34495e;
+        color: #fff;
+        border-left: 4px solid #3498db;
+      }
+      .sidebar a.disabled-link {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+      .sidebar a.disabled-link:hover {
+        background-color: transparent;
+        color: #bdc3c7;
+        border-left: none;
+      }
+      .sidebar a.logout-btn {
+        color: #e74c3c;
+        border-top: 1px solid #34495e;
+        margin-top: auto;
+        padding: 20px 25px;
+        font-weight: bold;
+      }
+      .sidebar a.logout-btn:hover {
+        background-color: #c0392b;
+        color: #fff;
+        border-left: 4px solid #fff;
+      }
+
+      .main-content {
+        flex: 1;
+        padding: 30px;
+        box-sizing: border-box;
+        overflow-y: auto;
+      }
+      .page-title-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+      }
+      .page-title {
+        margin: 0;
+        color: #333;
+      }
+
+      .table-card {
+        background: #fff;
+        border-radius: 6px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        margin-top: 10px;
+      }
+      th {
+        background-color: #f8f9fa;
+        padding: 12px 15px;
+        color: #7f8c8d;
+        font-size: 13px;
+        text-transform: uppercase;
+        border-bottom: 2px solid #eaeaea;
+      }
+      td {
+        padding: 15px;
+        border-bottom: 1px solid #eaeaea;
+        font-size: 14px;
+        color: #2c3e50;
+        vertical-align: top;
+      }
+      tr:hover {
+        background-color: #fcfdfd;
+      }
+
+      .status-badge {
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        display: inline-block;
+      }
+      .status-pending {
+        background: #e3f2fd;
+        color: #1e88e5;
+      }
+      .status-paid {
+        background: #fff3e0;
+        color: #fb8c00;
+      }
+      .status-shipped {
+        background: #f3e5f5;
+        color: #8e24aa;
+      }
+      .status-delivered {
+        background: #e8f5e9;
+        color: #43a047;
+      }
+      .status-cancelled {
+        background: #ffebee;
+        color: #e53935;
+      }
+
+      .action-select {
+        padding: 6px 10px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        font-family: "Lato", sans-serif;
+        background: #fff;
+        cursor: pointer;
+      }
+      .no-data-msg {
+        text-align: center;
+        padding: 40px;
+        color: #95a5a6;
+        font-style: italic;
+      }
+    </style>
+    <script>
+      function loadComponent(url, elementId) {
+        var req = new XMLHttpRequest();
+        req.open("GET", url, false);
+        req.send(null);
+        document.getElementById(elementId).innerHTML = req.responseText;
+      }
+    </script>
+  </head>
+  <body>
+    <div id="header-container"></div>
+    <script>
+      loadComponent("header.html", "header-container");
+    </script>
+
+    <div id="dashboard-wrapper">
+      <aside class="sidebar">
+        <div class="sidebar-menu">
+          <h3>ADMIN PANEL</h3>
+          <a href="exadmidashbord.html"
+            ><i class="fas fa-chart-line"></i> Dashboard</a
+          >
+          <a href="adclothing.html" class="active"
+            ><i class="fas fa-tshirt"></i> Clothing</a
+          >
+          <a href="adaccessories.html"
+            ><i class="fas fa-gem"></i> Accessories</a
+          >
+          <a href="order.html"><i class="fas fa-shopping-basket"></i> Orders</a>
+          <a href="supportstricket.html"
+            ><i class="fas fa-headset"></i> Support Tickets</a
+          >
+          <a class="disabled-link"><i class="fas fa-users"></i> Users</a>
+        </div>
+        <a onclick="handleLogout()" class="logout-btn"
+          ><i class="fas fa-sign-out-alt"></i> Log Out</a
+        >
+      </aside>
+
+      <main class="main-content">
+        <div class="page-title-row">
+          <h2 class="page-title">User Placement Orders</h2>
+        </div>
+
+        <div class="table-card">
+          <table>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer Name</th>
+                <th>Address Location</th>
+                <th>Phone Number</th>
+                <th>Operation Mode</th>
+                <th>Current Status</th>
+                <th>Update Workflow</th>
+              </tr>
+            </thead>
+            <tbody id="orders-table-body">
+              <!-- Rows injected from backend -->
+            </tbody>
+          </table>
+          <div id="no-orders" class="no-data-msg" style="display: none"
+            >No current pending user requests found.</div
+          >
+        </div>
+      </main>
+    </div>
+
+    <div id="footer-container"></div>
+    <script>
+      loadComponent("footer.html", "footer-container");
+    </script>
+
+    <script>
+      // ─── Backend config ─────────────────────────────────────────
+      const API_BASE = "http://localhost:5000/api"; // change to your deployed backend URL
+
+      function getToken() {
+        return localStorage.getItem("buybloom_token");
+      }
+
+      function authHeaders() {
+        const token = getToken();
+        return {
+          "Content-Type": "application/json",
+          ...(token ? {Authorization: `Bearer ${token}`} : {}),
+        };
+      }
+
+      // Maps backend order.status -> badge class + label
+      const STATUS_MAP = {
+        Pending: {badgeClass: "status-pending", label: "Order Pending"},
+        Paid: {badgeClass: "status-paid", label: "Paid"},
+        Shipped: {badgeClass: "status-shipped", label: "Shipped"},
+        Delivered: {badgeClass: "status-delivered", label: "Delivered"},
+        Cancelled: {badgeClass: "status-cancelled", label: "Cancelled"},
+      };
+
+      function formatAddress(addr) {
+        if (!addr) return "-";
+        return [addr.address, addr.city, addr.postalCode, addr.country]
+          .filter(Boolean)
+          .join(", ");
+      }
+
+      async function loadLiveOrders() {
+        const tableBody = document.getElementById("orders-table-body");
+        const noOrdersMsg = document.getElementById("no-orders");
+
+        try {
+          const res = await fetch(`${API_BASE}/admin/orders`, {
+            method: "GET",
+            headers: authHeaders(),
+          });
+
+          if (res.status === 401 || res.status === 403) {
+            alert("Please log in as admin to view orders.");
+            window.location.href = "login.html";
+            return;
+          }
+
+          const data = await res.json();
+
+          if (!data.success) {
+            console.error(data.message);
+            return;
+          }
+
+          const orders = data.orders || [];
+          tableBody.innerHTML = "";
+
+          if (orders.length === 0) {
+            noOrdersMsg.style.display = "block";
+            return;
+          }
+          noOrdersMsg.style.display = "none";
+
+          orders.forEach((order) => {
+            const statusInfo = STATUS_MAP[order.status] || STATUS_MAP.Pending;
+            const customerName = order.user ? order.user.name : "Unknown";
+            const customerPhone =
+              order.user && order.user.phone ? order.user.phone : "-";
+
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                        <td><strong>${order._id}</strong></td>
+                        <td>${customerName}</td>
+                        <td>${formatAddress(order.shippingAddress)}</td>
+                        <td>${customerPhone}</td>
+                        <td>${order.paymentMethod === "COD" ? "Cash On Delivery" : order.paymentMethod}</td>
+                        <td><span class="status-badge ${statusInfo.badgeClass}" id="badge-${order._id}">${statusInfo.label}</span></td>
+                        <td>
+                            <select class="action-select" onchange="changeStatus(this, '${order._id}')">
+                                <option value="Pending" ${order.status === "Pending" ? "selected" : ""}>Pending</option>
+                                <option value="Paid" ${order.status === "Paid" ? "selected" : ""}>Paid</option>
+                                <option value="Shipped" ${order.status === "Shipped" ? "selected" : ""}>Shipped</option>
+                                <option value="Delivered" ${order.status === "Delivered" ? "selected" : ""}>Delivered</option>
+                                <option value="Cancelled" ${order.status === "Cancelled" ? "selected" : ""}>Cancelled</option>
+                            </select>
+                        </td>`;
+            tableBody.appendChild(tr);
+          });
+        } catch (err) {
+          console.error("Failed to load orders:", err);
+          noOrdersMsg.textContent = "Failed to load orders. Please try again.";
+          noOrdersMsg.style.display = "block";
+        }
+      }
+
+      async function changeStatus(selectElement, orderId) {
+        const newStatus = selectElement.value;
+        const badge = document.getElementById(`badge-${orderId}`);
+
+        try {
+          const res = await fetch(`${API_BASE}/admin/orders/${orderId}`, {
+            method: "PUT",
+            headers: authHeaders(),
+            body: JSON.stringify({status: newStatus}),
+          });
+
+          const data = await res.json();
+
+          if (!data.success) {
+            alert(data.message || "Failed to update order status");
+            return;
+          }
+
+          const statusInfo = STATUS_MAP[newStatus] || STATUS_MAP.Pending;
+          if (badge) {
+            badge.className = `status-badge ${statusInfo.badgeClass}`;
+            badge.textContent = statusInfo.label;
+          }
+        } catch (err) {
+          console.error("Failed to update status:", err);
+          alert("Failed to update order status. Please try again.");
+        }
+      }
+
+      function handleLogout() {
+        if (confirm("Logout from the Admin Panel?")) {
+          localStorage.removeItem("buybloom_token");
+          window.location.href = "login.html";
+        }
+      }
+
+      window.onload = function () {
+        loadLiveOrders();
+      };
+    </script>
+  </body>
+</html>

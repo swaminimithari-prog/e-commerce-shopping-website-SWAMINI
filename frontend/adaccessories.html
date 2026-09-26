@@ -1,0 +1,748 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BUYBLOOM | ACCESSORIES INVENTORY MANAGEMENT</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        font-family: "Lato", sans-serif;
+        background-color: #f4f6f9;
+        display: flex;
+        flex-direction: column;
+      }
+
+      #header-container {
+        width: 100%;
+      }
+
+      #dashboard-wrapper {
+        display: flex;
+        flex: 1;
+        min-height: calc(100vh - 120px);
+      }
+
+      /* Sidebar Styling */
+      .sidebar {
+        width: 240px;
+        background-color: #2c3e50;
+        color: #fff;
+        padding-top: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .sidebar-menu {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .sidebar h3 {
+        text-align: center;
+        font-size: 18px;
+        margin-bottom: 30px;
+        letter-spacing: 1px;
+        color: #ecf0f1;
+      }
+
+      .sidebar a {
+        display: flex;
+        align-items: center;
+        padding: 15px 25px;
+        color: #bdc3c7;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 15px;
+        cursor: pointer;
+      }
+
+      .sidebar a i {
+        margin-right: 15px;
+        width: 20px;
+        text-align: center;
+      }
+
+      .sidebar a:hover,
+      .sidebar a.active {
+        background-color: #34495e;
+        color: #fff;
+        border-left: 4px solid #3498db;
+      }
+
+      .sidebar a.disabled-link {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+
+      .sidebar a.disabled-link:hover {
+        background-color: transparent;
+        color: #bdc3c7;
+        border-left: none;
+      }
+
+      .sidebar a.logout-btn {
+        color: #e74c3c;
+        border-top: 1px solid #34495e;
+        margin-top: auto;
+        padding: 20px 25px;
+        font-weight: bold;
+      }
+
+      .sidebar a.logout-btn:hover {
+        background-color: #c0392b;
+        color: #fff;
+        border-left: 4px solid #fff;
+      }
+
+      /* Main Content Workspace */
+      .main-content {
+        flex: 1;
+        padding: 30px;
+        box-sizing: border-box;
+        overflow-y: auto;
+      }
+
+      .page-title-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+      }
+
+      .page-title {
+        margin: 0;
+        color: #333;
+      }
+
+      /* Form Layout Styles */
+      .admin-form-container {
+        background: #fff;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        margin-bottom: 40px;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 15px;
+        align-items: flex-end;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-group label {
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #7f8c8d;
+        margin-bottom: 6px;
+      }
+
+      .form-group input,
+      .form-group select {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-family: "Lato", sans-serif;
+        font-size: 14px;
+      }
+
+      .btn-submit-product {
+        background-color: #2ecc71;
+        color: white;
+        border: none;
+        padding: 11px 20px;
+        font-weight: bold;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.2s;
+        text-transform: uppercase;
+        font-size: 13px;
+      }
+
+      .btn-submit-product:hover {
+        background-color: #27ae60;
+      }
+
+      /* Product Catalog Matrices Displays */
+      .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 25px;
+      }
+
+      .product-card {
+        background: #fff;
+        border-radius: 6px;
+        overflow: hidden;
+        border: 1px solid #e0e0e0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .image-wrapper {
+        width: 100%;
+        height: 220px;
+        background-color: #f9f9f9;
+      }
+
+      .image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .product-details {
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+      }
+
+      .brand-name {
+        font-size: 11px;
+        text-transform: uppercase;
+        color: #95a5a6;
+        font-weight: bold;
+        margin-bottom: 4px;
+      }
+
+      .product-name {
+        font-size: 14px;
+        color: #333;
+        margin: 0 0 12px 0;
+        font-weight: normal;
+        line-height: 1.3;
+      }
+
+      .price-management {
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        border-top: 1px solid #f1f1f1;
+        padding-top: 10px;
+      }
+
+      .price-input-wrapper {
+        display: flex;
+        align-items: center;
+        background: #f4f6f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 4px 8px;
+        flex-grow: 1;
+      }
+
+      .price-input-wrapper span {
+        font-weight: bold;
+        color: #27ae60;
+        margin-right: 2px;
+      }
+
+      .input-price-edit {
+        border: none;
+        background: transparent;
+        font-weight: bold;
+        color: #333;
+        width: 100%;
+        font-size: 14px;
+        font-family: "Lato", sans-serif;
+      }
+
+      .input-price-edit:focus {
+        outline: none;
+      }
+
+      .btn-update-price {
+        background: #34495e;
+        color: #fff;
+        border: none;
+        padding: 7px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 11px;
+        text-transform: uppercase;
+        font-weight: bold;
+        transition: background 0.2s;
+      }
+
+      .btn-update-price:hover {
+        background: #2c3e50;
+      }
+
+      .btn-delete-product {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 7px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 11px;
+        transition: background 0.2s;
+      }
+
+      .btn-delete-product:hover {
+        background-color: #c0392b;
+      }
+
+      #footer-container {
+        width: 100%;
+      }
+    </style>
+    <script>
+      function loadComponent(url, elementId) {
+        var req = new XMLHttpRequest();
+        req.open("GET", url, false);
+        req.send(null);
+        document.getElementById(elementId).innerHTML = req.responseText;
+      }
+    </script>
+  </head>
+
+  <body>
+    <div id="header-container"></div>
+    <script>
+      loadComponent("header.html", "header-container");
+    </script>
+
+    <div id="dashboard-wrapper">
+      <aside class="sidebar">
+        <div class="sidebar-menu">
+          <h3>ADMIN PANEL</h3>
+          <a href="exadmidashbord.html"
+            ><i class="fas fa-chart-line"></i> Dashboard</a
+          >
+          <a href="adclothing.html"><i class="fas fa-tshirt"></i> Clothing</a>
+          <a href="adaccessories.html" class="active"
+            ><i class="fas fa-gem"></i> Accessories</a
+          >
+          <a href="order.html"><i class="fas fa-shopping-basket"></i> Orders</a>
+          <a href="supportstricket.html"
+            ><i class="fas fa-headset"></i> Support Tickets</a
+          >
+          <a href="exadmidashbord.html"
+            ><i class="fas fa-users"></i> Users</a
+          >
+        </div>
+        <a onclick="handleLogout()" class="logout-btn"
+          ><i class="fas fa-sign-out-alt"></i> Log Out</a
+        >
+      </aside>
+
+      <main class="main-content">
+        <div class="page-title-row">
+          <h2 class="page-title">Accessories Inventory Workspace</h2>
+        </div>
+
+        <!-- Add New Product Form Console -->
+        <div class="admin-form-container">
+          <h3
+            style="
+              margin-top: 0;
+              margin-bottom: 15px;
+              font-size: 16px;
+              color: #2c3e50;
+            "
+            >Add New Accessory Item</h3
+          >
+          <form id="addAccessoryForm" onsubmit="addNewAccessory(event)">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="prodCategory">Category</label>
+                <select id="prodCategory" required>
+                  <option value="">Loading categories...</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="prodBrand">Brand</label>
+                <input
+                  type="text"
+                  id="prodBrand"
+                  placeholder="e.g., Casio, Ray-Ban"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="prodName">Product Title</label>
+                <input
+                  type="text"
+                  id="prodName"
+                  placeholder="e.g., Aviator Sunglasses"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="prodPrice">Price (Without Symbol)</label>
+                <input
+                  type="number"
+                  id="prodPrice"
+                  placeholder="e.g., 8490"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="prodImg">Image URL</label>
+                <input
+                  type="url"
+                  id="prodImg"
+                  placeholder="https://images.unsplash.com/..."
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="prodDescription">Description</label>
+                <input
+                  type="text"
+                  id="prodDescription"
+                  placeholder="Short description"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="prodStock">Stock</label>
+                <input
+                  type="number"
+                  id="prodStock"
+                  placeholder="e.g., 50"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn-submit-product">Add Item</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Live Dynamic Inventory Display Grid -->
+        <div class="products-grid" id="adminAccessoriesGrid"></div>
+      </main>
+    </div>
+
+    <div id="footer-container"></div>
+    <script>
+      loadComponent("footer.html", "footer-container");
+    </script>
+
+    <!-- <script>
+        const fallbackCatalog = [
+            { id: "#ACC001", name: "Edifice Chronograph Analog Watch", brand: "Casio", price: "11995", category: "men", img: "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=500" },
+            { id: "#ACC002", name: "Classic Aviator Sunglasses", brand: "Ray-Ban", price: "8490", category: "men", img: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=500" },
+            { id: "#ACC003", name: "Bifold Genuine Leather Wallet", brand: "Tommy Hilfiger", price: "2799", category: "men", img: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=500" },
+            { id: "#ACC011", name: "Luxury Faux-Leather Tote Handbag", brand: "Caprese", price: "4299", category: "women", img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500" },
+            { id: "#ACC014", name: "Carlie Rose Gold Stainless Steel Watch", brand: "Fossil", price: "9495", category: "women", img: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=500" }
+        ];
+
+        function getNormalizedCatalog() {
+            let data = localStorage.getItem('storeAccessories');
+            if (!data) {
+                localStorage.setItem('storeAccessories', JSON.stringify(fallbackCatalog));
+                return fallbackCatalog;
+            }
+            
+            let parsed = JSON.parse(data);
+            return parsed.map(item => {
+                if (typeof item.price === 'string') {
+                    item.price = item.price.replace(/[₹,]/g, '');
+                }
+                return item;
+            });
+        }
+
+        function renderAccessoriesGrid() {
+            const grid = document.getElementById('adminAccessoriesGrid');
+            grid.innerHTML = '';
+            
+            const catalog = getNormalizedCatalog();
+
+            catalog.forEach(product => {
+                const escapedId = product.id.toString().replace('#', '');
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div class="image-wrapper"><img src="${product.img}" alt="${product.name}"></div>
+                    <div class="product-details">
+                        <div class="brand-name">${product.brand}</div>
+                        <h3 class="product-name">${product.name}</h3>
+                        <div class="price-management">
+                            <div class="price-input-wrapper">
+                                <span>₹</span>
+                                <input type="number" class="input-price-edit" id="input-price-${escapedId}" value="${product.price}">
+                            </div>
+                            <button class="btn-update-price" onclick="updatePrice('${product.id}')">Save</button>
+                            <button class="btn-delete-product" onclick="removeAccessory('${product.id}')" title="Delete Item">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function updatePrice(productId) {
+            const catalog = getNormalizedCatalog();
+            const selectorId = `input-price-${productId.toString().replace('#', '')}`;
+            const targetInput = document.getElementById(selectorId);
+            const updatedPriceValue = targetInput.value.replace(/[₹,]/g, '');
+
+            const targetIndex = catalog.findIndex(p => p.id === productId);
+            if (targetIndex !== -1) {
+                catalog[targetIndex].price = updatedPriceValue;
+                localStorage.setItem('storeAccessories', JSON.stringify(catalog));
+                alert(`Pricing valuation updated successfully!`);
+                renderAccessoriesGrid();
+            }
+        }
+
+        function removeAccessory(productId) {
+            if (confirm("Are you sure you want to permanently delete this accessory item?")) {
+                let catalog = getNormalizedCatalog();
+                catalog = catalog.filter(p => p.id !== productId);
+                localStorage.setItem('storeAccessories', JSON.stringify(catalog));
+                renderAccessoriesGrid();
+            }
+        }
+
+        function handleLogout() {
+            if(confirm("Logout from the Admin Panel?")) { window.location.href = "login.html"; }
+        }
+
+        window.onload = function() {
+            renderAccessoriesGrid();
+        };
+    </script> -->
+    <script>
+      const API_BASE_URL = "http://localhost:5000";
+
+      async function checkAdminAccess() {
+        const token = localStorage.getItem("buybloom_token");
+        if (!token) {
+          alert("Please log in as an admin.");
+          window.location.href = "login.html";
+          return null;
+        }
+        try {
+          const res = await fetch(`${API_BASE_URL}/api/auth/profile`, {
+            headers: {Authorization: "Bearer " + token},
+          });
+          const data = await res.json();
+          if (!res.ok || !data.user || !data.user.isAdmin) {
+            alert("Admin access required.");
+            window.location.href = "login.html";
+            return null;
+          }
+          return token;
+        } catch (err) {
+          console.error("Auth check failed:", err);
+          window.location.href = "login.html";
+          return null;
+        }
+      }
+
+      async function loadCategoryOptions() {
+        const select = document.getElementById("prodCategory");
+        try {
+          const res = await fetch(`${API_BASE_URL}/api/categories`);
+          const data = await res.json();
+          if (!res.ok || !data.success || !data.categories.length) {
+            select.innerHTML =
+              '<option value="">No categories found — run the seed script</option>';
+            return;
+          }
+          select.innerHTML = data.categories
+            .map((cat) => `<option value="${cat._id}">${cat.name}</option>`)
+            .join("");
+        } catch (err) {
+          console.error("Failed to load categories:", err);
+          select.innerHTML =
+            '<option value="">Failed to load categories</option>';
+        }
+      }
+
+      async function fetchAccessories(category) {
+        try {
+          const url =
+            category && category !== "all"
+              ? `${API_BASE_URL}/api/products?category=${category}&type=accessories`
+              : `${API_BASE_URL}/api/products?category=men&type=accessories`; // fallback if you don't have a combined query yet
+
+          const res = await fetch(url);
+          const data = await res.json();
+          return data.success ? data.products : [];
+        } catch (err) {
+          console.error("Failed to fetch products:", err);
+          return [];
+        }
+      }
+
+      async function renderAccessoriesGrid() {
+        const grid = document.getElementById("adminAccessoriesGrid");
+        grid.innerHTML = "<p>Loading...</p>";
+
+        const catalog = await fetchAccessories();
+        grid.innerHTML = "";
+
+        if (catalog.length === 0) {
+          grid.innerHTML = "<p>No accessories found.</p>";
+          return;
+        }
+
+        catalog.forEach((product) => {
+          const card = document.createElement("div");
+          card.className = "product-card";
+          card.innerHTML = `
+                <div class="image-wrapper"><img src="${product.image}" alt="${product.name}"></div>
+                <div class="product-details">
+                    <div class="brand-name">${product.brand || ""}</div>
+                    <h3 class="product-name">${product.name}</h3>
+                    <div class="price-management">
+                        <div class="price-input-wrapper">
+                            <span>₹</span>
+                            <input type="number" class="input-price-edit" id="input-price-${product._id}" value="${product.price}">
+                        </div>
+                        <button class="btn-update-price" onclick="updatePrice('${product._id}')">Save</button>
+                        <button class="btn-delete-product" onclick="removeAccessory('${product._id}')" title="Delete Item">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+          grid.appendChild(card);
+        });
+      }
+
+      async function addNewAccessory(event) {
+        event.preventDefault();
+        const token = localStorage.getItem("buybloom_token");
+
+        const newItem = {
+          category: document.getElementById("prodCategory").value,
+          type: "accessories",
+          brand: document.getElementById("prodBrand").value,
+          name: document.getElementById("prodName").value,
+          price: Number(document.getElementById("prodPrice").value),
+          image: document.getElementById("prodImg").value,
+          description: document.getElementById("prodDescription").value,
+          countInStock: Number(document.getElementById("prodStock").value),
+        };
+
+        try {
+          const res = await fetch(`${API_BASE_URL}/api/products`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+            body: JSON.stringify(newItem),
+          });
+          const data = await res.json();
+
+          if (!res.ok || !data.success) {
+            alert(data.message || "Failed to add product.");
+            return;
+          }
+
+          document.getElementById("addAccessoryForm").reset();
+          renderAccessoriesGrid();
+          alert(`"${newItem.name}" published live to storefront catalog!`);
+        } catch (err) {
+          console.error("Add product failed:", err);
+          alert("Something went wrong while adding the product.");
+        }
+      }
+
+      async function updatePrice(productId) {
+        const token = localStorage.getItem("buybloom_token");
+        const targetInput = document.getElementById(`input-price-${productId}`);
+        const updatedPrice = Number(targetInput.value);
+
+        try {
+          const res = await fetch(`${API_BASE_URL}/api/products/${productId}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+            body: JSON.stringify({price: updatedPrice}),
+          });
+          const data = await res.json();
+
+          if (!res.ok || !data.success) {
+            alert(data.message || "Failed to update price.");
+            return;
+          }
+
+          alert("Pricing valuation updated successfully!");
+          renderAccessoriesGrid();
+        } catch (err) {
+          console.error("Update price failed:", err);
+          alert("Something went wrong while updating the price.");
+        }
+      }
+
+      async function removeAccessory(productId) {
+        if (
+          !confirm(
+            "Are you sure you want to permanently delete this accessory item?",
+          )
+        )
+          return;
+
+        const token = localStorage.getItem("buybloom_token");
+        try {
+          const res = await fetch(`${API_BASE_URL}/api/products/${productId}`, {
+            method: "DELETE",
+            headers: {Authorization: "Bearer " + token},
+          });
+          const data = await res.json();
+
+          if (!res.ok || !data.success) {
+            alert(data.message || "Failed to delete product.");
+            return;
+          }
+
+          renderAccessoriesGrid();
+        } catch (err) {
+          console.error("Delete product failed:", err);
+          alert("Something went wrong while deleting the product.");
+        }
+      }
+
+      function handleLogout() {
+        if (confirm("Logout from the Admin Panel?")) {
+          localStorage.removeItem("buybloom_token");
+          window.location.href = "login.html";
+        }
+      }
+
+      window.onload = async function () {
+        const ok = await checkAdminAccess();
+        if (ok) {
+          loadCategoryOptions();
+          renderAccessoriesGrid();
+        }
+      };
+    </script>
+  </body>
+</html>

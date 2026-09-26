@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- <link rel="stylesheet" href="/style.css"> -->
+    <title> BUYBOOM E-COMMERCE WEBSITE | PROFILE </title>
+    <!-- favicon -->
+    <link
+      rel="icon"
+      href="https://yt3.ggpht.com/a/AGF-l78km1YyNXmF0r3-0CycCA0HLA_i6zYn_8NZEg=s900-c-k-c0xffffffff-no-rj-mo"
+      type="image/gif"
+      sizes="16x16"
+    />
+    <!-- header links -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato&display=swap"
+      rel="stylesheet"
+    />
+    <script src="src/assets/js/jQuery3.4.1.js"></script>
+
+    <style>
+      body {
+        font-family: "Lato", sans-serif;
+        margin: 0;
+        background: #f5f5f5;
+      }
+      .status-badge {
+        font-size: 11px;
+        padding: 2px 6px;
+        border-radius: 10px;
+        margin-left: 10px;
+      }
+      .status-Delivered {
+        background: #55efc4;
+        color: #00b894;
+      }
+      .status-Paid {
+        background: #dfe6e9;
+        color: #2d3436;
+      }
+      .status-Pending {
+        background: #ffeaa7;
+        color: #d63031;
+      }
+      .status-Cancelled {
+        background: #fab1a0;
+        color: #d63031;
+      }
+    </style>
+
+    <script>
+      // Declared ONCE globally, matching index.html's pattern.
+      function load(url) {
+        var req = new XMLHttpRequest();
+        req.open("GET", url, false);
+        req.send(null);
+        return req.responseText;
+      }
+    </script>
+  </head>
+
+  <body>
+    <!-- HEADER -->
+    <div id="1"></div>
+    <script>
+      document.getElementById("1").innerHTML = load("header.html");
+    </script>
+
+    <!-- PROFILE CONTENT -->
+    <div id="3">
+      <div
+        style="
+          max-width: 900px;
+          margin: 40px auto;
+          padding: 0 20px;
+          font-family: &quot;Lato&quot;, sans-serif;
+          color: #333;
+        "
+      >
+        <h2
+          style="
+            margin-bottom: 25px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+          "
+          >My Account Profile</h2
+        >
+
+        <div style="display: flex; gap: 30px; flex-wrap: wrap">
+          <!-- Left Side: Profile Card -->
+          <div
+            style="
+              flex: 1;
+              min-width: 280px;
+              background: #fff;
+              padding: 30px;
+              border-radius: 8px;
+              box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+              text-align: center;
+              height: fit-content;
+            "
+          >
+            <div
+              style="
+                width: 120px;
+                height: 120px;
+                background: #e0e0e0;
+                border-radius: 50%;
+                margin: 0 auto 15px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <i
+                class="fas fa-user"
+                style="font-size: 50px; color: #7f8c8d"
+              ></i>
+            </div>
+            <h3 id="profile-card-name" style="margin: 10px 0 5px 0"
+              >Guest User</h3
+            >
+            <p
+              id="profile-card-email"
+              style="
+                margin: 0;
+                color: #7f8c8d;
+                font-size: 14px;
+                margin-bottom: 20px;
+              "
+              >guest@buybloom.com</p
+            >
+            <button
+              onclick="logoutUser()"
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #d63031;
+                background: transparent;
+                color: #d63031;
+                border-radius: 4px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: 0.3s;
+              "
+            >
+              <i class="fas fa-sign-out-alt"></i> Log Out
+            </button>
+          </div>
+
+          <!-- Right Side: Edit Details & History -->
+          <div
+            style="
+              flex: 2;
+              min-width: 320px;
+              display: flex;
+              flex-direction: column;
+              gap: 25px;
+            "
+          >
+            <!-- Personal Info Form -->
+            <div
+              style="
+                background: #fff;
+                padding: 25px;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+              "
+            >
+              <h4 style="margin-top: 0; margin-bottom: 15px; font-size: 18px"
+                ><i class="fas fa-user-edit"></i> Personal Information</h4
+              >
+              <form
+                id="profileEditForm"
+                onsubmit="return saveProfileChanges(event);"
+              >
+                <div style="display: flex; gap: 15px; margin-bottom: 15px">
+                  <div style="flex: 1">
+                    <label
+                      style="
+                        display: block;
+                        font-size: 12px;
+                        font-weight: bold;
+                        margin-bottom: 5px;
+                      "
+                      >First Name</label
+                    >
+                    <input
+                      type="text"
+                      id="prof-fname"
+                      value=""
+                      style="
+                        width: 100%;
+                        padding: 10px;
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                        box-sizing: border-box;
+                      "
+                    />
+                  </div>
+                  <div style="flex: 1">
+                    <label
+                      style="
+                        display: block;
+                        font-size: 12px;
+                        font-weight: bold;
+                        margin-bottom: 5px;
+                      "
+                      >Last Name</label
+                    >
+                    <input
+                      type="text"
+                      id="prof-lname"
+                      value=""
+                      style="
+                        width: 100%;
+                        padding: 10px;
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                        box-sizing: border-box;
+                      "
+                    />
+                  </div>
+                </div>
+                <div style="display: flex; gap: 15px; margin-bottom: 15px">
+                  <div style="flex: 1">
+                    <label
+                      style="
+                        display: block;
+                        font-size: 12px;
+                        font-weight: bold;
+                        margin-bottom: 5px;
+                      "
+                      >Phone</label
+                    >
+                    <input
+                      type="text"
+                      id="prof-phone"
+                      value=""
+                      style="
+                        width: 100%;
+                        padding: 10px;
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                        box-sizing: border-box;
+                      "
+                    />
+                  </div>
+                </div>
+                <div style="margin-bottom: 15px">
+                  <label
+                    style="
+                      display: block;
+                      font-size: 12px;
+                      font-weight: bold;
+                      margin-bottom: 5px;
+                    "
+                    >Delivery Address</label
+                  >
+                  <input
+                    type="text"
+                    id="prof-address"
+                    value=""
+                    placeholder="Street address"
+                    style="
+                      width: 100%;
+                      padding: 10px;
+                      border: 1px solid #ccc;
+                      border-radius: 4px;
+                      box-sizing: border-box;
+                      margin-bottom: 10px;
+                    "
+                  />
+                  <div style="display: flex; gap: 10px">
+                    <input
+                      type="text"
+                      id="prof-city"
+                      value=""
+                      placeholder="City"
+                      style="
+                        flex: 1;
+                        padding: 10px;
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                        box-sizing: border-box;
+                      "
+                    />
+                    <input
+                      type="text"
+                      id="prof-state"
+                      value=""
+                      placeholder="State"
+                      style="
+                        flex: 1;
+                        padding: 10px;
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                        box-sizing: border-box;
+                      "
+                    />
+                    <input
+                      type="text"
+                      id="prof-zip"
+                      value=""
+                      placeholder="ZIP"
+                      style="
+                        flex: 0 0 90px;
+                        width: 90px;
+                        min-width: 90px;
+                        padding: 8px 10px;
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                        box-sizing: border-box;
+                      "
+                    />
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  style="
+                    background: #333;
+                    color: #fff;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 4px;
+                    font-weight: bold;
+                    cursor: pointer;
+                  "
+                  >Save Changes</button
+                >
+              </form>
+            </div>
+
+            <!-- Recent Orders Section -->
+            <div
+              style="
+                background: #fff;
+                padding: 25px;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+              "
+            >
+              <h4 style="margin-top: 0; margin-bottom: 15px; font-size: 18px"
+                ><i class="fas fa-shopping-bag"></i> Recent Orders</h4
+              >
+              <div id="ordersList">
+                <p style="color: #7f8c8d; font-size: 14px">Loading orders...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div id="4"></div>
+    <script>
+      document.getElementById("4").innerHTML = load("footer.html");
+    </script>
+  </body>
+
+  <script>
+    const API_BASE = "http://localhost:5000/api"; // update to your deployed backend URL
+    const token = localStorage.getItem("buybloom_token"); // JWT auth token only, not app data
+
+    // Redirect to login if not authenticated
+    if (!token) {
+      window.location.href = "login.html";
+    }
+
+    // ---- Load profile data from backend ----
+    async function loadProfile() {
+      try {
+        const res = await fetch(`${API_BASE}/auth/profile`, {
+          headers: {Authorization: `Bearer ${token}`},
+        });
+        const data = await res.json();
+
+        if (!data.success) throw new Error(data.message);
+
+        const user = data.user;
+        const nameParts = (user.name || "").split(" ");
+
+        document.getElementById("profile-card-name").textContent =
+          user.name || "Guest User";
+        document.getElementById("profile-card-email").textContent =
+          user.email || "";
+        document.getElementById("prof-fname").value = nameParts[0] || "";
+        document.getElementById("prof-lname").value =
+          nameParts.slice(1).join(" ") || "";
+        document.getElementById("prof-phone").value = user.phone || "";
+
+        if (user.address) {
+          document.getElementById("prof-address").value =
+            user.address.street || "";
+          document.getElementById("prof-city").value = user.address.city || "";
+          document.getElementById("prof-state").value =
+            user.address.state || "";
+          document.getElementById("prof-zip").value =
+            user.address.zipCode || "";
+        }
+
+        // Update header greeting too
+        const loginBtn = document.querySelector(".auth-buttons .btn-login");
+        if (loginBtn) {
+          loginBtn.textContent = "Hi, " + (user.name).split(' ')[0];
+          loginBtn.href = "profile.html";
+        }
+      } catch (err) {
+        console.error("Failed to load profile:", err);
+        alert("Session expired. Please log in again.");
+        localStorage.removeItem("buybloom_token");
+        window.location.href = "login.html";
+      }
+    }
+
+    // ---- Load recent orders from backend ----
+    async function loadOrders() {
+      const ordersList = document.getElementById("ordersList");
+      try {
+        const res = await fetch(`${API_BASE}/orders/myorders`, {
+          headers: {Authorization: `Bearer ${token}`},
+        });
+        const data = await res.json();
+
+        if (!data.success) throw new Error(data.message);
+
+        if (!data.orders.length) {
+          ordersList.innerHTML = `<p style="color:#7f8c8d; font-size: 14px;">No orders yet.</p>`;
+          return;
+        }
+
+        ordersList.innerHTML = data.orders
+          .slice(0, 5)
+          .map((order) => {
+            const itemSummary = order.orderItems
+              .map((i) => `${i.quantity}x ${i.name}`)
+              .join(", ");
+            const borderColor =
+              order.status === "Delivered"
+                ? "#2ecc71"
+                : order.status === "Cancelled"
+                  ? "#e74c3c"
+                  : "#f1c40f";
+
+            return `
+                    <div style="border-left: 3px solid ${borderColor}; padding-left: 15px; margin-bottom: 15px;">
+                        <p style="margin: 0; font-weight: bold; font-size: 14px;">
+                            Order #${order._id.slice(-6).toUpperCase()}
+                            <span class="status-badge status-${order.status}">${order.status}</span>
+                        </p>
+                        <p style="margin: 3px 0 0 0; font-size: 13px; color: #7f8c8d;">
+                            ${itemSummary} — Total: ₹${order.totalPrice}
+                        </p>
+                    </div>
+                `;
+          })
+          .join("");
+      } catch (err) {
+        console.error("Failed to load orders:", err);
+        ordersList.innerHTML = `<p style="color:#7f8c8d; font-size: 14px;">Could not load orders.</p>`;
+      }
+    }
+
+    // ---- Save profile changes to backend ----
+    async function saveProfileChanges(e) {
+      e.preventDefault();
+
+      const fname = document.getElementById("prof-fname").value.trim();
+      const lname = document.getElementById("prof-lname").value.trim();
+      const fullName = [fname, lname].filter(Boolean).join(" ");
+      const phone = document.getElementById("prof-phone").value.trim();
+
+      const address = {
+        street: document.getElementById("prof-address").value.trim(),
+        city: document.getElementById("prof-city").value.trim(),
+        state: document.getElementById("prof-state").value.trim(),
+        zipCode: document.getElementById("prof-zip").value.trim(),
+      };
+
+      try {
+        const res = await fetch(`${API_BASE}/auth/profile`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({name: fullName, phone, address}),
+        });
+        const data = await res.json();
+
+        if (!data.success) throw new Error(data.message);
+
+        document.getElementById("profile-card-name").textContent =
+          data.user.name;
+        alert("Profile updated successfully!");
+      } catch (err) {
+        console.error("Failed to update profile:", err);
+        alert(err.message || "Failed to update profile.");
+      }
+
+      return false;
+    }
+
+    function logoutUser() {
+      // Only the auth token is cleared — cart/orders live in the database
+      // tied to the user account, so nothing else needs clearing client-side.
+      localStorage.clear();
+      alert("Logged out successfully");
+      window.location.href = "index.html";
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      loadProfile();
+      loadOrders();
+    });
+  </script>
+</html>

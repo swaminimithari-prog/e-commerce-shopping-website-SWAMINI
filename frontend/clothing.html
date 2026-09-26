@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BUYBLOOM | CLOTHING STORE</title>
+    <link rel="icon"
+        href="https://yt3.ggpht.com/a/AGF-l78km1YyNXmF0r3-0CycCA0HLA_i6zYn_8NZEg=s900-c-k-c0xffffffff-no-rj-mo"
+        type="image/gif" sizes="16x16">
+    <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+    <script src="src/assets/js/jQuery3.4.1.js"></script>
+
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Lato', sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #header-container {
+            width: 100%;
+            order: -1;
+        }
+
+        #footer-container {
+            width: 100%;
+            order: 1;
+        }
+
+        #main-clothing-container {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 40px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 28px;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .filter-btn {
+            padding: 10px 25px;
+            font-size: 16px;
+            font-family: 'Lato', sans-serif;
+            font-weight: bold;
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background-color: #333;
+            color: #fff;
+            border-color: #333;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #eee;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .image-wrapper {
+            width: 100%;
+            height: 320px;
+            background-color: #f9f9f9;
+            overflow: hidden;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-details {
+            padding: 15px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding-bottom: 60px;
+            /* Space reserved to hold the integrated inline card buttons securely */
+        }
+
+        .brand-name {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #888;
+            letter-spacing: 1px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .product-name {
+            font-size: 16px;
+            color: #333;
+            margin: 0 0 10px 0;
+            font-weight: normal;
+        }
+
+        .product-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        /* ================= INLINE CARD ACTIONS BUTTON ROW ================= */
+        .card-action-container {
+            display: flex;
+            gap: 8px;
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            right: 15px;
+            z-index: 10;
+        }
+
+        .btn-card-action {
+            flex: 1;
+            padding: 8px 10px;
+            font-size: 12px;
+            font-family: 'Lato', sans-serif;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: background 0.2s ease, transform 0.1s ease;
+            text-align: center;
+        }
+
+        .btn-card-action:active {
+            transform: scale(0.96);
+        }
+
+        .btn-card-cart {
+            background-color: #f39c12;
+            color: #fff;
+        }
+
+        .btn-card-cart:hover {
+            background-color: #e67e22;
+        }
+
+        .btn-card-buy {
+            background-color: #2c3e50;
+            color: #fff;
+        }
+
+        .btn-card-buy:hover {
+            background-color: #1a252f;
+        }
+
+        /* ================= MODAL OVERLAY STYLES ================= */
+        .product-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            box-sizing: border-box;
+            position: relative;
+            text-align: center;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        .close-modal:hover {
+            color: #333;
+        }
+
+        .modal-img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .modal-brand {
+            font-size: 14px;
+            text-transform: uppercase;
+            color: #888;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            color: #333;
+            margin: 0 0 10px 0;
+        }
+
+        .modal-price {
+            font-size: 22px;
+            font-weight: bold;
+            color: #27ae60;
+            margin-bottom: 25px;
+        }
+
+        .modal-action-btns {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .btn-add-cart {
+            background-color: #f39c12;
+            color: #fff;
+        }
+
+        .btn-add-cart:hover {
+            background-color: #e67e22;
+        }
+
+        .btn-buy-now {
+            background-color: #2c3e50;
+            color: #fff;
+        }
+
+        .btn-buy-now:hover {
+            background-color: #1a252f;
+        }
+    </style>
+
+    <script>
+        function loadComponent(url, elementId) {
+            var req = new XMLHttpRequest();
+            req.open("GET", url, false);
+            req.send(null);
+            document.getElementById(elementId).innerHTML = req.responseText;
+        }
+    </script>
+</head>
+
+<body>
+
+    <div id="header-container"></div>
+
+    <main id="main-clothing-container">
+        <h1 class="page-title">Clothing Collection</h1>
+
+        <div class="filter-tabs">
+            <button class="filter-btn active" onclick="filterCategory('all', this)">All Clothing</button>
+            <button class="filter-btn" onclick="filterCategory('men', this)">Men</button>
+            <button class="filter-btn" onclick="filterCategory('women', this)">Women</button>
+        </div>
+
+        <!-- <div class="products-grid" id="clothingGrid">
+
+            
+            <div class="product-card" data-category="men" onclick="openProductModal(this)">
+                <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=500" alt="Nike Men T-Shirt"></div>
+                <div class="product-details">
+                    <div><div class="brand-name">Nike</div><h3 class="product-name">Men's Dry-Fit Training Tee</h3></div>
+                    <div class="product-price">₹1,999</div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="men" onclick="openProductModal(this)">
+                <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=500" alt="Puma Hoodie"></div>
+                <div class="product-details">
+                    <div><div class="brand-name">Puma</div><h3 class="product-name">Classic Fleece Pullover Hoodie</h3></div>
+                    <div class="product-price">₹3,499</div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="men" onclick="openProductModal(this)">
+                <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=500" alt="Polo Shirt"></div>
+                <div class="product-details">
+                    <div><div class="brand-name">Polo</div><h3 class="product-name">Slim Fit Cotton Polo Shirt</h3></div>
+                    <div class="product-price">₹4,200</div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="men" onclick="openProductModal(this)">
+                <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?w=500" alt="H&M Men Shirt"></div>
+                <div class="product-details">
+                    <div><div class="brand-name">H&M</div><h3 class="product-name">Men's Slim-fit Linen Blend Shirt</h3></div>
+                    <div class="product-price">₹2,299</div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="men" onclick="openProductModal(this)">
+                <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1495105787522-5334e3ffa0ef?w=500" alt="Nike Jacket"></div>
+                <div class="product-details">
+                    <div><div class="brand-name">Nike</div><h3 class="product-name">Essential Running Windbreaker</h3></div>
+                    <div class="product-price">₹5,495</div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="men" onclick="openProductModal(this)">
+                <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=500" alt="Polo Blazer"></div>
+                <div class="product-details">
+                    <div><div class="brand-name">Polo</div><h3 class="product-name">Classic Knitted Cotton Blazer</h3></div>
+                    <div class="product-price">₹8,999</div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="men" onclick="openProductModal(this)">
+                <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=500" alt="Puma Sweatshirt"></div>
+                <div class="product-details">
+                    <div><div class="brand-name">Puma</div><h3 class="product-name">Evostripe Crewneck Sweatshirt</h3></div>
+                    <div class="product-price">₹2,799</div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="men" onclick="openProductModal(this)">
+                <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=500" alt="H&M Trousers"></div>
+                <div class="product-details">
+                    <div><div class="brand-name">H&M</div><h3 class="product-name">Regular Fit Chino Trousers</h3></div>
+                    <div class="product-price">₹1,999</div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="men" onclick="openProductModal(this)">
+                <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1505022610485-0249ba5b3675?w=500" alt="Polo Jacket"></div>
+                <div class="product-details">
+                    <div><div class="brand-name">Polo</div><h3 class="product-name">Water-Resistant Windbreaker Jacket</h3></div>
+                    <div class="product-price">₹7,500</div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="men" onclick="openProductModal(this)">
+                <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1563122184-97a39775bb54?w=500" alt="Nike Shorts"></div>
+                <div class="product-details">
+                    <div><div class="brand-name">Nike</div><h3 class="product-name">Flex Woven Athletic Shorts</h3></div>
+                    <div class="product-price">₹1,695</div>
+                </div>
+            </div>
+
+
+            <div class="product-card" data-category="women" onclick="openProductModal(this)">
+                <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500" alt="H&M Women Dress"></div>
+                <div class="product-details">
+                    <div><div class="brand-name">H&M</div><h3 class="product-name">Women's Summer Knit Dress</h3></div>
+                    <div class="product-price">₹2,999</div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="women" onclick="openProductModal(this)">
+                <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=500" alt="Puma Crop Top"></div>
+                <div class="product-details">
+                    <div><div class="brand-name">Puma</div><h3 class="product-name">Women's Essentials Logo Crop Top</h3></div>
+                    <div class="product-price">₹1,499</div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="women" onclick="openProductModal(this)">
+                <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1578587018452-892bacefd3f2?w=500" alt="Nike Jacket"></div>
+                <div class="product-details">
+                    <div><div class="brand-name">Nike</div><h3 class="product-name">Sportswear Windrunner Track Jacket</h3></div>
+                    <div class="product-price">₹4,995</div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="women" onclick="openProductModal(this)">
+                <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=500" alt="Polo Sweater"></div>
+                <div class="product-details">
+                    <div><div class="brand-name">Polo</div><h3 class="product-name">Cable-Knit Cotton V-Neck Sweater</h3></div>
+                    <div class="product-price">₹6,200</div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="women" onclick="openProductModal(this)">
+                <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500" alt="H&M Evening Dress"></div>
+                <div class="product-details">
+                    <div><div class="brand-name">H&M</div><h3 class="product-name">A-Line Off-the-Shoulder Dress</h3></div>
+                    <div class="product-price">₹3,999</div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="women" onclick="openProductModal(this)">
+                <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=500" alt="Puma Leggings"></div>
+                <div class="product-details">
+                    <div><div class="brand-name">Puma</div><h3 class="product-name">High-Waisted Performance Leggings</h3></div>
+                    <div class="product-price">₹2,499</div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="women" onclick="openProductModal(this)">
+                <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=500" alt="Nike Sweatpants"></div>
+                <div class="product-details">
+                    <div><div class="brand-name">Nike</div><h3 class="product-name">Club Fleece Women's Joggers</h3></div>
+                    <div class="product-price">₹3,295</div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="women" onclick="openProductModal(this)">
+                <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1618244972963-dbee1a7edc95?w=500" alt="H&M Blouse"></div>
+                <div class="product-details">
+                    <div><div class="brand-name">H&M</div><h3 class="product-name">V-neck Satin Wrap Blouse</h3></div>
+                    <div class="product-price">₹1,799</div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="women" onclick="openProductModal(this)">
+                <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=500" alt="Polo Skirt"></div>
+                <div class="product-details">
+                    <div><div class="brand-name">Polo</div><h3 class="product-name">Pleated Tartan Twill Skirt</h3></div>
+                    <div class="product-price">₹5,500</div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="women" onclick="openProductModal(this)">
+                <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=500" alt="Puma Tracksuit"></div>
+                <div class="product-details">
+                    <div><div class="brand-name">Puma</div><h3 class="product-name">Classic T7 Track Jacket Jacket</h3></div>
+                    <div class="product-price">₹3,999</div>
+                </div>
+            </div>
+
+        </div> -->
+
+        <div class="products-grid" id="clothingGrid"></div>
+    </main>
+
+    <div class="product-modal" id="productModal" onclick="closeProductModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-modal" onclick="document.getElementById('productModal').style.display = 'none'">×</span>
+            <img class="modal-img" id="modalImg" src="" alt="">
+            <div class="modal-brand" id="modalBrand"></div>
+            <h2 class="modal-title" id="modalTitle"></h2>
+            <div class="modal-price" id="modalPrice"></div>
+            <div class="modal-action-btns">
+                <button class="btn-action btn-add-cart" onclick="handleAddToCart()">Add to Cart</button>
+                <button class="btn-action btn-buy-now" onclick="handleBuyNow()">Buy Now</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-container"></div>
+
+    <script>
+        const API_BASE_URL = "http://localhost:5000";
+
+        loadComponent("header.html", "header-container");
+        loadComponent("footer.html", "footer-container");
+
+        let currentProduct = null;
+
+        function formatDisplayPrice(price) {
+            if (!price) return "₹0";
+            return "₹" + Number(price).toLocaleString('en-IN');
+        }
+
+        async function fetchClothing(category) {
+            try {
+                const url = category && category !== 'all'
+                    ? `${API_BASE_URL}/api/products?category=${category}&type=clothing`
+                    : `${API_BASE_URL}/api/products?category=men&type=clothing`;
+
+                const res = await fetch(url);
+                const data = await res.json();
+                return data.success ? data.products : [];
+            } catch (err) {
+                console.error('Failed to fetch products:', err);
+                return [];
+            }
+        }
+
+        async function renderClothingStorefront(category = 'all') {
+            const grid = document.getElementById('clothingGrid');
+            grid.innerHTML = "<p>Loading...</p>";
+
+            let products = [];
+            if (category === 'all') {
+                const [men, women] = await Promise.all([
+                    fetchClothing('men'),
+                    fetchClothing('women')
+                ]);
+                products = [...men, ...women];
+            } else {
+                products = await fetchClothing(category);
+            }
+
+            grid.innerHTML = "";
+
+            if (products.length === 0) {
+                grid.innerHTML = "<p>No products found.</p>";
+                return;
+            }
+
+            products.forEach(product => {
+                const cleanDisplayPrice = formatDisplayPrice(product.price);
+                const card = document.createElement('div');
+                card.className = "product-card";
+                card.setAttribute('data-category', product.category);
+                card.setAttribute('data-product-id', product._id);
+                card.onclick = function () { openProductModal(product); };
+
+                card.innerHTML = `
+                <div class="image-wrapper"><img src="${product.image}" alt="${product.name}"></div>
+                <div class="product-details">
+                    <div>
+                        <div class="brand-name">${product.brand || ''}</div>
+                        <h3 class="product-name">${product.name}</h3>
+                    </div>
+                    <div class="product-price">${cleanDisplayPrice}</div>
+                </div>
+            `;
+
+                const actionRow = document.createElement('div');
+                actionRow.className = 'card-action-container';
+
+                const cartBtn = document.createElement('button');
+                cartBtn.className = 'btn-card-action btn-card-cart';
+                cartBtn.innerHTML = '<i class="fas fa-shopping-cart"></i> Cart';
+                cartBtn.onclick = function (event) {
+                    event.stopPropagation();
+                    currentProduct = product;
+                    handleAddToCart();
+                };
+
+                const buyBtn = document.createElement('button');
+                buyBtn.className = 'btn-card-action btn-card-buy';
+                buyBtn.innerText = 'Buy Now';
+                buyBtn.onclick = function (event) {
+                    event.stopPropagation();
+                    currentProduct = product;
+                    handleBuyNow();
+                };
+
+                actionRow.appendChild(cartBtn);
+                actionRow.appendChild(buyBtn);
+                card.appendChild(actionRow);
+                grid.appendChild(card);
+            });
+        }
+
+        function filterCategory(category, buttonElement) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            buttonElement.classList.add('active');
+            renderClothingStorefront(category);
+        }
+
+        function openProductModal(product) {
+            currentProduct = product;
+            document.getElementById('modalImg').src = product.image;
+            document.getElementById('modalBrand').textContent = product.brand || '';
+            document.getElementById('modalTitle').textContent = product.name;
+            document.getElementById('modalPrice').textContent = formatDisplayPrice(product.price);
+            document.getElementById('productModal').style.display = 'flex';
+        }
+
+        function closeProductModal(event) {
+            if (event.target.id === 'productModal') {
+                document.getElementById('productModal').style.display = 'none';
+            }
+        }
+
+        async function addCurrentItemToCart() {
+            const token = localStorage.getItem("buybloom_token");
+            if (!token) {
+                alert('Please log in to add items to your cart.');
+                window.location.href = 'login.html';
+                return false;
+            }
+
+            if (!currentProduct || !currentProduct._id) {
+                alert('Something went wrong — product not found.');
+                return false;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/cart`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({ productId: currentProduct._id, quantity: 1 })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok || !data.success) {
+                    alert(data.message || 'Failed to add item to cart.');
+                    return false;
+                }
+
+                return true;
+            } catch (err) {
+                console.error('Add to cart failed:', err);
+                alert('Something went wrong while adding to cart.');
+                return false;
+            }
+        }
+
+        async function handleAddToCart() {
+            const success = await addCurrentItemToCart();
+            if (success) alert('Item successfully added to cart!');
+        }
+
+        async function handleBuyNow() {
+            const success = await addCurrentItemToCart();
+            if (success) window.location.href = 'checkout.html';
+        }
+
+        async function updateHeaderGreeting() {
+            const token = localStorage.getItem("buybloom_token");
+            if (!token) return;
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/auth/profile`, {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                if (!res.ok) {
+                    localStorage.removeItem("buybloom_token");
+                    return;
+                }
+                const data = await res.json();
+                const loginLink = document.getElementById('header-container').querySelector('a[href*="login.html"]');
+                if (loginLink && data.user) {
+                    loginLink.textContent = "Hi, " + data.user.name;
+                    loginLink.href = "#";
+                }
+            } catch (err) {
+                console.error('Failed to fetch profile:', err);
+            }
+        }
+
+        window.onload = function () {
+            renderClothingStorefront('all');
+            updateHeaderGreeting();
+        };
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BUYBLOOM | CLOTHING STORE</title>
+    <link
+      rel="icon"
+      href="https://yt3.ggpht.com/a/AGF-l78km1YyNXmF0r3-0CycCA0HLA_i6zYn_8NZEg=s900-c-k-c0xffffffff-no-rj-mo"
+      type="image/gif"
+      sizes="16x16"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato&display=swap"
+      rel="stylesheet"
+    />
+    <script src="src/assets/js/jQuery3.4.1.js"></script>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        font-family: "Lato", sans-serif;
+        display: flex;
+        flex-direction: column;
+      }
+
+      #header-container {
+        width: 100%;
+        order: -1;
+      }
+      #footer-container {
+        width: 100%;
+        order: 1;
+      }
+
+      #main-clothing-container {
+        flex: 1;
+        max-width: 1200px;
+        width: 100%;
+        margin: 40px auto;
+        padding: 0 20px;
+        box-sizing: border-box;
+      }
+
+      .page-title {
+        text-align: center;
+        font-size: 28px;
+        letter-spacing: 1px;
+        margin-bottom: 30px;
+        text-transform: uppercase;
+      }
+
+      .filter-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 40px;
+      }
+
+      .filter-btn {
+        padding: 10px 25px;
+        font-size: 16px;
+        font-family: "Lato", sans-serif;
+        font-weight: bold;
+        background-color: #f4f4f4;
+        border: 1px solid #ddd;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .filter-btn:hover,
+      .filter-btn.active {
+        background-color: #333;
+        color: #fff;
+        border-color: #333;
+      }
+
+      .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 30px;
+      }
+
+      .status-msg {
+        text-align: center;
+        padding: 40px;
+        color: #888;
+        font-size: 16px;
+        grid-column: 1 / -1;
+      }
+
+      .product-card {
+        background: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #eee;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .product-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .image-wrapper {
+        width: 100%;
+        height: 320px;
+        background-color: #f9f9f9;
+        overflow: hidden;
+      }
+
+      .image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .product-details {
+        padding: 15px;
+        text-align: center;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding-bottom: 60px;
+      }
+
+      .brand-name {
+        font-size: 12px;
+        text-transform: uppercase;
+        color: #888;
+        letter-spacing: 1px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .product-name {
+        font-size: 16px;
+        color: #333;
+        margin: 0 0 10px 0;
+        font-weight: normal;
+      }
+
+      .product-price {
+        font-size: 18px;
+        font-weight: bold;
+        color: #27ae60;
+      }
+
+      /* ================= INLINE CARD ACTIONS BUTTON ROW ================= */
+      .card-action-container {
+        display: flex;
+        gap: 8px;
+        position: absolute;
+        bottom: 15px;
+        left: 15px;
+        right: 15px;
+        z-index: 10;
+      }
+
+      .btn-card-action {
+        flex: 1;
+        padding: 8px 10px;
+        font-size: 12px;
+        font-family: "Lato", sans-serif;
+        font-weight: bold;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition:
+          background 0.2s ease,
+          transform 0.1s ease;
+        text-align: center;
+      }
+
+      .btn-card-action:active {
+        transform: scale(0.96);
+      }
+
+      .btn-card-action:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .btn-card-cart {
+        background-color: #f39c12;
+        color: #fff;
+      }
+
+      .btn-card-cart:hover {
+        background-color: #e67e22;
+      }
+
+      .btn-card-buy {
+        background-color: #2c3e50;
+        color: #fff;
+      }
+
+      .btn-card-buy:hover {
+        background-color: #1a252f;
+      }
+
+      /* ================= MODAL OVERLAY STYLES ================= */
+      .product-modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-content {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        max-width: 500px;
+        width: 90%;
+        box-sizing: border-box;
+        position: relative;
+        text-align: center;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .close-modal {
+        position: absolute;
+        right: 20px;
+        top: 15px;
+        font-size: 28px;
+        font-weight: bold;
+        color: #aaa;
+        cursor: pointer;
+      }
+
+      .close-modal:hover {
+        color: #333;
+      }
+
+      .modal-img {
+        width: 100%;
+        max-height: 300px;
+        object-fit: contain;
+        border-radius: 6px;
+        margin-bottom: 15px;
+      }
+
+      .modal-brand {
+        font-size: 14px;
+        text-transform: uppercase;
+        color: #888;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .modal-title {
+        font-size: 20px;
+        color: #333;
+        margin: 0 0 10px 0;
+      }
+
+      .modal-price {
+        font-size: 22px;
+        font-weight: bold;
+        color: #27ae60;
+        margin-bottom: 25px;
+      }
+
+      .modal-action-btns {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+      }
+
+      .btn-action {
+        flex: 1;
+        padding: 12px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+      }
+
+      .btn-add-cart {
+        background-color: #f39c12;
+        color: #fff;
+      }
+
+      .btn-add-cart:hover {
+        background-color: #e67e22;
+      }
+
+      .btn-buy-now {
+        background-color: #2c3e50;
+        color: #fff;
+      }
+
+      .btn-buy-now:hover {
+        background-color: #1a252f;
+      }
+    </style>
+
+    <script>
+      function loadComponent(url, elementId) {
+        var req = new XMLHttpRequest();
+        req.open("GET", url, false);
+        req.send(null);
+        document.getElementById(elementId).innerHTML = req.responseText;
+      }
+    </script>
+  </head>
+  <body>
+    <div id="header-container"></div>
+
+    <main id="main-clothing-container">
+      <h1 class="page-title">Clothing Collection</h1>
+
+      <div class="filter-tabs">
+        <button class="filter-btn active" onclick="filterCategory('all', this)"
+          >All Clothing</button
+        >
+        <button class="filter-btn" onclick="filterCategory('men', this)"
+          >Men</button
+        >
+        <button class="filter-btn" onclick="filterCategory('women', this)"
+          >Women</button
+        >
+      </div>
+
+      <!-- Products are now rendered dynamically from the backend/database. See script at bottom. -->
+      <div class="products-grid" id="clothingGrid">
+        <div class="status-msg" id="loadingMsg">Loading products...</div>
+      </div>
+    </main>
+
+    <div
+      class="product-modal"
+      id="productModal"
+      onclick="closeProductModal(event)"
+    >
+      <div class="modal-content" onclick="event.stopPropagation()">
+        <span
+          class="close-modal"
+          onclick="
+            document.getElementById('productModal').style.display = 'none'
+          "
+          >×</span
+        >
+        <img class="modal-img" id="modalImg" src="" alt="" />
+        <div class="modal-brand" id="modalBrand"></div>
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <div class="modal-price" id="modalPrice"></div>
+        <div class="modal-action-btns">
+          <button class="btn-action btn-add-cart" id="modalAddCartBtn"
+            >Add to Cart</button
+          >
+          <button class="btn-action btn-buy-now" id="modalBuyNowBtn"
+            >Buy Now</button
+          >
+        </div>
+      </div>
+    </div>
+
+    <div id="footer-container"></div>
+
+    <script>
+      // ---- Backend API config + helper (inline, no separate file) ----
+      const API_BASE = "http://localhost:5000/api";
+
+      function getToken() {
+        return localStorage.getItem("buybloom_token");
+      }
+      function getStoredUser() {
+        const raw = localStorage.getItem("user");
+        return raw ? JSON.parse(raw) : null;
+      }
+      function isLoggedIn() {
+        return !!getToken();
+      }
+
+      async function apiFetch(endpoint, options = {}) {
+        const headers = {
+          "Content-Type": "application/json",
+          ...(getToken() ? {Authorization: `Bearer ${getToken()}`} : {}),
+          ...(options.headers || {}),
+        };
+
+        const res = await fetch(`${API_BASE}${endpoint}`, {
+          ...options,
+          headers,
+        });
+
+        let data;
+        try {
+          data = await res.json();
+        } catch (e) {
+          data = {};
+        }
+
+        if (!res.ok) {
+          throw new Error(
+            data.message || `Request failed with status ${res.status}`,
+          );
+        }
+        return data;
+      }
+      // ---- End helper ----
+    </script>
+
+    <script>
+      loadComponent("header.html", "header-container");
+      loadComponent("footer.html", "footer-container");
+
+      // Holds the products fetched from the database so the modal / filters can reference them
+      let allProducts = [];
+      let currentCategory = "all";
+
+      function filterCategory(category, buttonElement) {
+        currentCategory = category;
+        const buttons = document.querySelectorAll(".filter-btn");
+        buttons.forEach((btn) => btn.classList.remove("active"));
+        buttonElement.classList.add("active");
+        renderProducts();
+      }
+
+      function getCategoryLabel(product) {
+        // category may come back populated ({ name: 'men' }) or as a plain string
+        if (!product.category) return "";
+        if (typeof product.category === "string")
+          return product.category.toLowerCase();
+        return (product.category.name || "").toLowerCase();
+      }
+
+      function renderProducts() {
+        const grid = document.getElementById("clothingGrid");
+        grid.innerHTML = "";
+
+        const filtered = allProducts.filter((p) => {
+          if (currentCategory === "all") return true;
+          return getCategoryLabel(p) === currentCategory;
+        });
+
+        if (filtered.length === 0) {
+          grid.innerHTML = '<div class="status-msg">No products found.</div>';
+          return;
+        }
+
+        filtered.forEach((product) => {
+          const card = document.createElement("div");
+          card.className = "product-card";
+          card.setAttribute("data-id", product._id);
+          card.setAttribute("data-category", getCategoryLabel(product));
+
+          card.innerHTML = `
+                    <div class="image-wrapper">
+                        <img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/500?text=No+Image+Available'">
+                    </div>
+                    <div class="product-details">
+                        <div>
+                            <div class="brand-name">${product.brand || ""}</div>
+                            <h3 class="product-name">${product.name}</h3>
+                        </div>
+                        <div class="product-price">₹${Number(product.price).toLocaleString("en-IN")}</div>
+                    </div>
+                `;
+
+          card.addEventListener("click", () => openProductModal(product));
+
+          const actionRow = document.createElement("div");
+          actionRow.className = "card-action-container";
+
+          const cartBtn = document.createElement("button");
+          cartBtn.className = "btn-card-action btn-card-cart";
+          cartBtn.innerHTML = '<i class="fas fa-shopping-cart"></i> Cart';
+          cartBtn.addEventListener("click", (event) => {
+            event.stopPropagation();
+            handleAddToCart(product._id, cartBtn);
+          });
+
+          const buyBtn = document.createElement("button");
+          buyBtn.className = "btn-card-action btn-card-buy";
+          buyBtn.innerText = "Buy Now";
+          buyBtn.addEventListener("click", (event) => {
+            event.stopPropagation();
+            handleBuyNow(product._id);
+          });
+
+          actionRow.appendChild(cartBtn);
+          actionRow.appendChild(buyBtn);
+          card.appendChild(actionRow);
+
+          grid.appendChild(card);
+        });
+      }
+
+      // Fetch clothing products from the database via backend API
+      async function loadProducts() {
+        const loadingMsg = document.getElementById("loadingMsg");
+        try {
+          // Calls backend: GET /api/products?type=clothing
+          // (category now comes back populated as { _id, name, slug } thanks
+          // to the backend's productController.js populate fix)
+          const data = await apiFetch("/products?type=clothing");
+          allProducts = data.products || [];
+          renderProducts();
+        } catch (err) {
+          document.getElementById("clothingGrid").innerHTML =
+            `<div class="status-msg">Failed to load products: ${err.message}</div>`;
+        }
+      }
+
+      // Add a product to the logged-in user's cart (stored in DB, not localStorage)
+      async function handleAddToCart(productId, buttonEl) {
+        if (!isLoggedIn()) {
+          alert("Please log in to add items to your cart.");
+          window.location.href = "login.html";
+          return;
+        }
+
+        if (buttonEl) {
+          buttonEl.disabled = true;
+          buttonEl.textContent = "Adding...";
+        }
+
+        try {
+          // Calls backend: POST /api/cart
+          await apiFetch("/cart", {
+            method: "POST",
+            body: JSON.stringify({productId, quantity: 1}),
+          });
+          alert("Item successfully added to cart!");
+        } catch (err) {
+          alert(err.message || "Failed to add item to cart.");
+        } finally {
+          if (buttonEl) {
+            buttonEl.disabled = false;
+            buttonEl.innerHTML = '<i class="fas fa-shopping-cart"></i> Cart';
+          }
+        }
+      }
+
+      // Add to cart then go straight to checkout
+      async function handleBuyNow(productId) {
+        if (!isLoggedIn()) {
+          alert("Please log in to continue.");
+          window.location.href = "login.html";
+          return;
+        }
+
+        try {
+          await apiFetch("/cart", {
+            method: "POST",
+            body: JSON.stringify({productId, quantity: 1}),
+          });
+          window.location.href = "checkout.html";
+        } catch (err) {
+          alert(err.message || "Failed to proceed to checkout.");
+        }
+      }
+
+      function openProductModal(product) {
+        document.getElementById("modalImg").src = product.image;
+        document.getElementById("modalBrand").textContent = product.brand || "";
+        document.getElementById("modalTitle").textContent = product.name;
+        document.getElementById("modalPrice").textContent =
+          "₹" + Number(product.price).toLocaleString("en-IN");
+
+        const addCartBtn = document.getElementById("modalAddCartBtn");
+        const buyNowBtn = document.getElementById("modalBuyNowBtn");
+
+        addCartBtn.onclick = () => handleAddToCart(product._id, null);
+        buyNowBtn.onclick = () => handleBuyNow(product._id);
+
+        document.getElementById("productModal").style.display = "flex";
+      }
+
+      function closeProductModal(event) {
+        if (event.target.id === "productModal") {
+          document.getElementById("productModal").style.display = "none";
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", loadProducts);
+    </script>
+
+    <script>
+      // Show logged-in user's name in header (name comes from backend login response)
+      (function () {
+        const user = getStoredUser();
+        if (user && user.name) {
+          const loginLink = document.querySelector(
+            '#header-container a[href*="login.html"]',
+          );
+          if (loginLink) {
+            loginLink.textContent = "Hi, " + user.name;
+            loginLink.href = "#";
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>

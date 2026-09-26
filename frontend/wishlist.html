@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BUYBLOOM | WISHLIST</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&display=swap" />
+    <style>
+      body { margin: 0; font-family: "Lato", sans-serif; color: #333; }
+      main { max-width: 1200px; margin: 32px auto; padding: 0 20px; }
+      h1 { margin: 0 0 24px; font-size: 26px; }
+      .wishlist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; }
+      .wishlist-card { position: relative; overflow: hidden; border: 1px solid #eee; background: #fff; }
+      .wishlist-card img { display: block; width: 100%; aspect-ratio: 1 / 1.15; object-fit: cover; }
+      .wishlist-details { padding: 14px; }
+      .wishlist-details h2 { margin: 0 0 8px; font-size: 16px; font-weight: 400; }
+      .wishlist-details p { margin: 0; color: #198754; font-size: 18px; font-weight: 700; }
+      .remove-wishlist { position: absolute; top: 12px; right: 12px; width: 36px; height: 36px; border: 0; border-radius: 50%; background: #fff; color: #e53935; cursor: pointer; box-shadow: 0 1px 5px #0003; }
+      .empty { color: #777; text-align: center; padding: 80px 20px; }
+    </style>
+  </head>
+  <body>
+    <div id="header-container"></div>
+    <main>
+      <h1>Wishlist</h1>
+      <div id="wishlist-grid" class="wishlist-grid"><p class="empty">Loading your wishlist...</p></div>
+    </main>
+    <script>
+      const API_BASE_URL = "http://localhost:5000";
+      const request = new XMLHttpRequest();
+      request.open("GET", "header.html", false);
+      request.send(null);
+      document.getElementById("header-container").innerHTML = request.responseText;
+
+      function formatPrice(price) {
+        return "₹" + Number(price || 0).toLocaleString("en-IN");
+      }
+
+      async function loadWishlist() {
+        const grid = document.getElementById("wishlist-grid");
+        const savedIds = JSON.parse(localStorage.getItem("likedProducts") || "[]");
+        if (!savedIds.length) {
+          grid.innerHTML = '<p class="empty">Your wishlist is empty.</p>';
+          return;
+        }
+
+        try {
+          const response = await fetch(API_BASE_URL + "/api/products");
+          const data = await response.json();
+          const products = (data.products || []).filter(function (product) {
+            return savedIds.indexOf(product._id) !== -1;
+          });
+          grid.innerHTML = "";
+          if (!products.length) {
+            grid.innerHTML = '<p class="empty">Your wishlist is empty.</p>';
+            return;
+          }
+
+          products.forEach(function (product) {
+            const card = document.createElement("article");
+            card.className = "wishlist-card";
+            card.innerHTML = '<img src="' + product.image + '" alt="' + product.name + '"><div class="wishlist-details"><h2>' + product.name + '</h2><p>' + formatPrice(product.price) + '</p></div>';
+            const removeButton = document.createElement("button");
+            removeButton.className = "remove-wishlist";
+            removeButton.title = "Remove from wishlist";
+            removeButton.innerHTML = '<i class="fas fa-heart"></i>';
+            removeButton.onclick = function () {
+              const remaining = savedIds.filter(function (id) { return id !== product._id; });
+              localStorage.setItem("likedProducts", JSON.stringify(remaining));
+              card.remove();
+              if (!grid.children.length) grid.innerHTML = '<p class="empty">Your wishlist is empty.</p>';
+            };
+            card.appendChild(removeButton);
+            grid.appendChild(card);
+          });
+        } catch (error) {
+          grid.innerHTML = '<p class="empty">Unable to load your wishlist.</p>';
+        }
+      }
+
+      loadWishlist();
+    </script>
+  </body>
+</html>
